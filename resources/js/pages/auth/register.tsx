@@ -142,13 +142,13 @@ export default function Register() {
                 <input type="checkbox" id="terms" className="rounded mt-1" required />
                 <Label htmlFor="terms" className="text-sm leading-relaxed">
                   I agree to the{" "}
-                  <Link href="#" className="text-blue-600 hover:underline">
+                  <TextLink href="#" className="text-blue-600 hover:underline">
                     Terms of Service
-                  </Link>{" "}
+                  </TextLink>{" "}
                   and{" "}
-                  <Link href="#" className="text-blue-600 hover:underline">
+                  <TextLink href="#" className="text-blue-600 hover:underline">
                     Privacy Policy
-                  </Link>
+                  </TextLink>
                 </Label>
               </div>
 
@@ -162,7 +162,7 @@ export default function Register() {
             <div className="text-center">
               <p className="text-sm text-gray-600">
                 Already have an account?{" "}
-                <Link href="/login" className="text-blue-600 hover:underline font-medium">
+                <Link href={route('login')} className="text-blue-600 hover:underline font-medium">
                   Sign in
                 </Link>
               </p>

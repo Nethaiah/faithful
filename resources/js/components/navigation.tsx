@@ -4,7 +4,7 @@ import { useState } from "react"
 import { Link, usePage } from "@inertiajs/react"
 import { Button } from "@/components/ui/button"
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
-import { BookOpen, Menu, Home, Plus, Heart, Settings } from "lucide-react"
+import { BookOpen, Menu, Home, Plus, Heart, Lock, UsersRound } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { type SharedData } from "@/types"
 import { UserMenuContent } from "./user-menu-content"
@@ -19,18 +19,21 @@ export function Navigation() {
 
   const publicNavItems = [
     { href: "/", label: "Home", icon: Home },
-    { href: '#', label: "Community", icon: Heart },
+    { href: '#', label: "Discover", icon: Heart },
+    { href: '#', label: "Community", icon: UsersRound },
   ]
 
   const authenticatedNavItems = [
     { href: route('dashboard'), label: "Dashboard", icon: Home },
     { href: '#', label: "Create", icon: Plus },
-    { href: '#', label: "Community", icon: Heart }
+    { href: '#', label: "Discover", icon: Heart },
+    { href: '#', label: "Community", icon: UsersRound },
+    { href: '#', label: "Privacy", icon: Lock },
   ]
 
   const navItems = auth.user ? authenticatedNavItems : publicNavItems
 
-  const NavLink = ({ href, label, icon: Icon, mobile = false }: any) => (
+  const NavLink = ({ href, label, icon: Icon, mobile = false }: { href: string, label: string, icon: any, mobile?: boolean }) => (
     <Link
       href={href}
       className={cn(

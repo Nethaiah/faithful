@@ -1,5 +1,4 @@
-import { type SharedData } from '@/types';
-import { Link, usePage } from '@inertiajs/react';
+import { Link } from '@inertiajs/react';
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
@@ -7,7 +6,6 @@ import { Heart, BookOpen, Users, Sparkles, ArrowRight, Globe } from "lucide-reac
 import { Navigation } from "@/components/navigation"
 
 export default function Welcome() {
-    const { auth } = usePage<SharedData>().props;
 
     const featuredDevotions = [
         {
@@ -79,13 +77,13 @@ export default function Welcome() {
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Button size="lg" className="text-lg px-8" asChild>
-              <Link href="/register">
+              <Link href={route('register')}>
                 Start Your Devotion Journey
                 <ArrowRight className="ml-2 h-5 w-5" />
               </Link>
             </Button>
             <Button size="lg" variant="outline" className="text-lg px-8" asChild>
-              <Link href="#devotions">Read Community Devotions</Link>
+              <Link href={route('login')}>Read Community Devotions</Link>
             </Button>
           </div>
         </div>
@@ -169,7 +167,7 @@ export default function Welcome() {
                   <div className="flex items-center justify-between">
                     <span className="text-sm text-gray-500">{devotion.timeAgo}</span>
                     <Button variant="ghost" size="sm" asChild>
-                      <Link href={`/devotions/${devotion.id}`}>
+                      <Link href="#">
                         Read More <ArrowRight className="ml-1 h-4 w-4" />
                       </Link>
                     </Button>
@@ -181,7 +179,7 @@ export default function Welcome() {
 
           <div className="text-center mt-8">
             <Button variant="outline" size="lg" asChild>
-              <Link href="/discover">View All Community Devotions</Link>
+              <Link href="#">View All Community Devotions</Link>
             </Button>
           </div>
         </div>
@@ -227,13 +225,13 @@ export default function Welcome() {
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Button size="lg" className="text-lg px-8" asChild>
-              <Link href="/register">
+              <Link href={route('register')}>
                 Create Your First Devotion
                 <ArrowRight className="ml-2 h-5 w-5" />
               </Link>
             </Button>
             <Button size="lg" variant="outline" className="text-lg px-8" asChild>
-              <Link href="/login">Sign In</Link>
+              <Link href={route('login')}>Sign In</Link>
             </Button>
           </div>
         </div>
@@ -256,22 +254,22 @@ export default function Welcome() {
               <h4 className="font-semibold mb-4">Features</h4>
               <ul className="space-y-2 text-sm text-gray-400">
                 <li>
-                  <Link href="/discover" className="hover:text-white">
+                  <Link href="#" className="hover:text-white">
                     AI-Powered Devotions
                   </Link>
                 </li>
                 <li>
-                  <Link href="/discover" className="hover:text-white">
+                  <Link href="#" className="hover:text-white">
                     Mood-Based Verses
                   </Link>
                 </li>
                 <li>
-                  <Link href="/" className="hover:text-white">
+                  <Link href="#" className="hover:text-white">
                     Community Sharing
                   </Link>
                 </li>
                 <li>
-                  <Link href="/privacy" className="hover:text-white">
+                  <Link href="#" className="hover:text-white">
                     Privacy Controls
                   </Link>
                 </li>
@@ -281,22 +279,22 @@ export default function Welcome() {
               <h4 className="font-semibold mb-4">Community</h4>
               <ul className="space-y-2 text-sm text-gray-400">
                 <li>
-                  <Link href="/" className="hover:text-white">
+                  <Link href="#" className="hover:text-white">
                     Public Devotions
                   </Link>
                 </li>
                 <li>
-                  <Link href="/" className="hover:text-white">
+                  <Link href="#" className="hover:text-white">
                     Guidelines
                   </Link>
                 </li>
                 <li>
-                  <Link href="/" className="hover:text-white">
+                  <Link href="#" className="hover:text-white">
                     Support
                   </Link>
                 </li>
                 <li>
-                  <Link href="/" className="hover:text-white">
+                  <Link href="#" className="hover:text-white">
                     Feedback
                   </Link>
                 </li>
@@ -306,22 +304,22 @@ export default function Welcome() {
               <h4 className="font-semibold mb-4">Privacy</h4>
               <ul className="space-y-2 text-sm text-gray-400">
                 <li>
-                  <Link href="/privacy" className="hover:text-white">
+                  <Link href="#" className="hover:text-white">
                     Privacy Policy
                   </Link>
                 </li>
                 <li>
-                  <Link href="/" className="hover:text-white">
+                  <Link href="#" className="hover:text-white">
                     Terms of Service
                   </Link>
                 </li>
                 <li>
-                  <Link href="/" className="hover:text-white">
+                  <Link href="#" className="hover:text-white">
                     Data Protection
                   </Link>
                 </li>
                 <li>
-                  <Link href="/" className="hover:text-white">
+                  <Link href="#" className="hover:text-white">
                     Contact Us
                   </Link>
                 </li>

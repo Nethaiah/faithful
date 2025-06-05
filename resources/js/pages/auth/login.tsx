@@ -1,5 +1,5 @@
 import { Head, useForm } from '@inertiajs/react';
-import { Link, Mail, Lock, Eye, EyeOff } from 'lucide-react';
+import { Mail, Lock, Eye, EyeOff } from 'lucide-react';
 import { FormEventHandler } from 'react';
 
 import InputError from '@/components/input-error';
@@ -25,8 +25,7 @@ interface LoginProps {
 }
 
 export default function Login({ status, canResetPassword }: LoginProps) {
-    const [password, setPassword] = useState("")
-  const [showPassword, setShowPassword] = useState(false)
+    const [showPassword, setShowPassword] = useState(false)
     const { data, setData, post, processing, errors, reset } = useForm<Required<LoginForm>>({
         email: '',
         password: '',
