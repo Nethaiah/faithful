@@ -13,6 +13,7 @@ import { usePage } from '@inertiajs/react';
 import { LayoutGrid, Menu, Search } from 'lucide-react';
 import AppLogo from './app-logo';
 import AppLogoIcon from './app-logo-icon';
+import { Link } from '@inertiajs/react';
 
 const mainNavItems: NavItem[] = [
     {

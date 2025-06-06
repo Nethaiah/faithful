@@ -18,15 +18,15 @@ export function Navigation() {
   const getInitials = useInitials()
 
   const publicNavItems = [
-    { href: "/", label: "Home", icon: Home },
-    { href: '#', label: "Discover", icon: Heart },
+    { href: route('home'), label: "Home", icon: Home },
+    { href: route('discover'), label: "Discover", icon: Heart },
     { href: '#', label: "Community", icon: UsersRound },
   ]
 
   const authenticatedNavItems = [
     { href: route('dashboard'), label: "Dashboard", icon: Home },
-    { href: '#', label: "Create", icon: Plus },
-    { href: '#', label: "Discover", icon: Heart },
+    { href: route('devotion.create'), label: "Create", icon: Plus },
+    { href: route('discover'), label: "Discover", icon: Heart },
     { href: '#', label: "Community", icon: UsersRound },
     { href: '#', label: "Privacy", icon: Lock },
   ]
@@ -37,8 +37,7 @@ export function Navigation() {
     <Link
       href={href}
       className={cn(
-        "flex items-center space-x-2 px-3 py-2 rounded-md text-sm font-medium transition-colors",
-        usePage<SharedData>().props.pathname === href ? "bg-blue-100 text-blue-700" : "text-gray-600 hover:text-gray-900 hover:bg-gray-100",
+        "flex items-center space-x-2 px-3 py-2 rounded-md text-sm font-medium transition-colors text-gray-600 hover:text-gray-900 hover:bg-gray-100",
         mobile && "w-full",
       )}
       onClick={() => setIsOpen(false)}
@@ -49,11 +48,11 @@ export function Navigation() {
   )
 
   return (
-    <header className="border-b bg-white/80 backdrop-blur-sm sticky top-0 z-50">
-      <div className="container mx-auto px-4 py-4">
-        <div className="flex items-center justify-between">
+    <header className="sticky top-0 z-40 w-full border-b bg-white/95 backdrop-blur supports-[backdrop-filter]:bg-white/60">
+      <div className="mx-auto flex h-16 w-full max-w-7xl items-center justify-between px-4">
+        <div className="flex w-full items-center justify-between">
           {/* Logo */}
-          <Link href={auth.user ? route('dashboard') : '/'} className="flex items-center space-x-2">
+          <Link href={auth.user ? route('dashboard') : route('home')} className="flex items-center space-x-2">
             <BookOpen className="h-8 w-8 text-blue-600" />
             <span className="text-2xl font-bold text-gray-900">Faithful</span>
           </Link>
