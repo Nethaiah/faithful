@@ -3,9 +3,8 @@
 import { useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Badge } from "@/components/ui/badge"
 import { Textarea } from "@/components/ui/textarea"
-import { Heart, BookOpen, Sparkles, RefreshCw, Plus, ArrowLeft } from "lucide-react"
+import { Heart, BookOpen, Sparkles, RefreshCw, ArrowLeft } from "lucide-react"
 import { Link } from "@inertiajs/react"
 import { usePage } from "@inertiajs/react"
 import { type SharedData } from "@/types"
@@ -122,10 +121,10 @@ export function MoodDiscovery() {
         {/* Header */}
         <div className="mb-6 sm:mb-8">
           <div className="flex items-center mb-3 sm:mb-4">
-            <Button 
-              variant="ghost" 
-              size="sm" 
-              className="px-2 sm:px-3 py-1.5 h-auto" 
+            <Button
+              variant="ghost"
+              size="sm"
+              className="px-2 sm:px-3 py-1.5 h-auto"
               asChild
             >
               {auth.user ? (
@@ -169,8 +168,8 @@ export function MoodDiscovery() {
                     key={mood.name}
                     variant={selectedMood === mood.name ? "default" : "outline"}
                     className={`h-auto p-3 sm:p-4 flex flex-col items-start space-y-1.5 sm:space-y-2 text-left ${
-                      selectedMood === mood.name 
-                        ? 'shadow-sm' 
+                      selectedMood === mood.name
+                        ? 'shadow-sm'
                         : 'hover:bg-gray-50 active:bg-gray-100 transition-colors'
                     }`}
                     onClick={() => handleMoodSelect(mood.name)}
@@ -243,8 +242,8 @@ export function MoodDiscovery() {
                 {currentVerses.length > 0 ? (
                   <div className="space-y-4">
                     {currentVerses.map((verse, index) => (
-                      <div 
-                        key={index} 
+                      <div
+                        key={index}
                         className="border border-gray-100 rounded-lg p-3 sm:p-4 hover:shadow-sm transition-shadow bg-white"
                       >
                         <div className="flex items-start gap-3">
@@ -260,7 +259,7 @@ export function MoodDiscovery() {
                         </div>
                       </div>
                     ))}
-                    
+
                     {selectedMood.startsWith("Custom:") && (
                       <div className="mt-4">
                         <Card className="bg-purple-50 border-purple-200">

@@ -11,7 +11,6 @@ import {
   Heart,
   MessageCircle,
   Share2,
-  Plus,
   Search,
   Filter,
   BookOpen,
@@ -158,25 +157,25 @@ export function CommunityPosts() {
 
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 sm:gap-4">
           <div className="flex items-center gap-1 sm:gap-2 overflow-x-auto pb-1 -mx-1 px-1">
-            <Button 
-              variant="ghost" 
-              size="sm" 
+            <Button
+              variant="ghost"
+              size="sm"
               className="text-gray-500 hover:text-red-500 h-8 px-2 sm:px-3 text-xs sm:text-sm"
             >
               <Heart className="h-3.5 w-3.5 sm:h-4 sm:w-4 mr-1 flex-shrink-0" />
               <span>{post.likes}</span>
             </Button>
-            <Button 
-              variant="ghost" 
-              size="sm" 
+            <Button
+              variant="ghost"
+              size="sm"
               className="text-gray-500 hover:text-blue-500 h-8 px-2 sm:px-3 text-xs sm:text-sm"
             >
               <MessageCircle className="h-3.5 w-3.5 sm:h-4 sm:w-4 mr-1 flex-shrink-0" />
               <span>{post.comments}</span>
             </Button>
-            <Button 
-              variant="ghost" 
-              size="sm" 
+            <Button
+              variant="ghost"
+              size="sm"
               className="text-gray-500 hover:text-green-500 h-8 px-2 sm:px-3 text-xs sm:text-sm"
             >
               <Share2 className="h-3.5 w-3.5 sm:h-4 sm:w-4 mr-1 flex-shrink-0" />
@@ -225,20 +224,20 @@ export function CommunityPosts() {
 
         <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
           <TabsList className="grid w-full grid-cols-3 h-auto p-0.5 bg-gray-100">
-            <TabsTrigger 
-              value="feed" 
+            <TabsTrigger
+              value="feed"
               className="py-2 text-xs sm:text-sm px-1 sm:px-3 whitespace-nowrap data-[state=active]:shadow-sm"
             >
               <span className="truncate">Community Feed</span>
             </TabsTrigger>
-            <TabsTrigger 
-              value="trending" 
+            <TabsTrigger
+              value="trending"
               className="py-2 text-xs sm:text-sm px-1 sm:px-3 whitespace-nowrap data-[state=active]:shadow-sm"
             >
               <span className="truncate">Trending</span>
             </TabsTrigger>
-            <TabsTrigger 
-              value="following" 
+            <TabsTrigger
+              value="following"
               className="py-2 text-xs sm:text-sm px-1 sm:px-3 whitespace-nowrap data-[state=active]:shadow-sm"
             >
               <span className="truncate">Following</span>
