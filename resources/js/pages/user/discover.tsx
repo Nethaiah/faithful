@@ -1,6 +1,6 @@
 import AppLayout from '@/layouts/app-layout';
 import { type BreadcrumbItem } from '@/types';
-import { MoodDiscovery } from '@/components/user-discover';
+import { MoodDiscovery } from '@/components/discover';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {

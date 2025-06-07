@@ -12,6 +12,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Separator } from '@/components/ui/separator';
 import { useState } from 'react';
 import { Link } from '@inertiajs/react';
+import { Checkbox } from '@/components/ui/checkbox';
 
 type RegisterForm = {
     name: string;
@@ -41,15 +42,15 @@ export default function Register() {
         <AuthLayout title="Join Faithful" description="Start your personalized Bible devotion journey today">
             <Head title="Register" />
             {/* Registration Form */}
-        <Card>
-          <CardHeader>
-            <CardTitle className='text-2xl'>Create Account</CardTitle>
-            <CardDescription>Fill in your details to get started with Faithful</CardDescription>
+        <Card className="w-full max-w-md mx-auto">
+          <CardHeader className="px-4 sm:px-6 pt-6 pb-4 sm:pb-5">
+            <CardTitle className='text-xl sm:text-2xl font-semibold text-center sm:text-left'>Create Account</CardTitle>
+            <CardDescription className="text-center sm:text-left text-sm sm:text-base">Fill in your details to get started with Faithful</CardDescription>
           </CardHeader>
-          <CardContent>
-            <form onSubmit={submit} className="space-y-4">
+          <CardContent className="px-4 sm:px-6 pb-6 sm:pb-8 pt-0">
+            <form onSubmit={submit} className="space-y-4 sm:space-y-5">
               <div className="grid gap-2">
-                <Label htmlFor="name">Full Name</Label>
+                <Label htmlFor="name" className="text-sm sm:text-base">Full Name</Label>
                 <div className="relative">
                   <User className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
                   <Input
@@ -58,14 +59,15 @@ export default function Register() {
                     placeholder="Your full name"
                     value={data.name}
                     onChange={(e) => setData('name', e.target.value)}
-                    className="pl-10"
+                    className="pl-10 h-11 sm:h-12 text-sm sm:text-base"
+                    autoComplete="name"
                   />
                 </div>
                 <InputError message={errors.name} />
               </div>
 
               <div className="grid gap-2">
-                <Label htmlFor="email">Email</Label>
+                <Label htmlFor="email" className="text-sm sm:text-base">Email</Label>
                 <div className="relative">
                   <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
                   <Input
@@ -74,14 +76,15 @@ export default function Register() {
                     placeholder="your@email.com"
                     value={data.email}
                     onChange={(e) => setData('email', e.target.value)}
-                    className="pl-10"
+                    className="pl-10 h-11 sm:h-12 text-sm sm:text-base"
+                    autoComplete="email"
                   />
                 </div>
                 <InputError message={errors.email} />
               </div>
 
               <div className="grid gap-2">
-                <Label htmlFor="password">Password</Label>
+                <Label htmlFor="password" className="text-sm sm:text-base">Password</Label>
                 <div className="relative">
                   <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
                   <Input
@@ -90,7 +93,8 @@ export default function Register() {
                     placeholder="Create a strong password"
                     value={data.password}
                     onChange={(e) => setData('password', e.target.value)}
-                    className="pl-10 pr-10"
+                    className="pl-10 pr-10 h-11 sm:h-12 text-sm sm:text-base"
+                    autoComplete="new-password"
                   />
                   <Button
                     type="button"
@@ -100,9 +104,9 @@ export default function Register() {
                     onClick={() => setShowPassword(!showPassword)}
                   >
                     {showPassword ? (
-                      <EyeOff className="h-4 w-4 text-gray-400" />
+                      <EyeOff className="h-4 w-4 sm:h-5 sm:w-5 text-gray-400" />
                     ) : (
-                      <Eye className="h-4 w-4 text-gray-400" />
+                      <Eye className="h-4 w-4 sm:h-5 sm:w-5 text-gray-400" />
                     )}
                   </Button>
                 </div>
@@ -110,7 +114,7 @@ export default function Register() {
               </div>
 
               <div className="grid gap-2">
-                <Label htmlFor="confirmPassword">Confirm Password</Label>
+                <Label htmlFor="confirmPassword" className="text-sm sm:text-base">Confirm Password</Label>
                 <div className="relative">
                   <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
                   <Input
@@ -119,7 +123,8 @@ export default function Register() {
                     placeholder="Confirm your password"
                     value={data.password_confirmation}
                     onChange={(e) => setData('password_confirmation', e.target.value)}
-                    className="pl-10 pr-10"
+                    className="pl-10 pr-10 h-11 sm:h-12 text-sm sm:text-base"
+                    autoComplete="new-password"
                   />
                   <Button
                     type="button"
@@ -129,9 +134,9 @@ export default function Register() {
                     onClick={() => setShowConfirmPassword(!showConfirmPassword)}
                   >
                     {showConfirmPassword ? (
-                      <EyeOff className="h-4 w-4 text-gray-400" />
+                      <EyeOff className="h-4 w-4 sm:h-5 sm:w-5 text-gray-400" />
                     ) : (
-                      <Eye className="h-4 w-4 text-gray-400" />
+                      <Eye className="h-4 w-4 sm:h-5 sm:w-5 text-gray-400" />
                     )}
                   </Button>
                 </div>
@@ -139,8 +144,8 @@ export default function Register() {
               </div>
 
               <div className="flex items-start gap-2">
-                <input type="checkbox" id="terms" className="rounded mt-1" required />
-                <Label htmlFor="terms" className="text-sm leading-relaxed">
+                <Checkbox id="terms" className="rounded h-4 w-4 mt-1" required />
+                <Label htmlFor="terms" className="text-sm sm:text-base leading-relaxed">
                   I agree to the{" "}
                   <TextLink href="#" className="text-blue-600 hover:underline">
                     Terms of Service
@@ -152,17 +157,24 @@ export default function Register() {
                 </Label>
               </div>
 
-              <Button type="submit" className="w-full" disabled={processing}>
+              <Button
+                type="submit"
+                className="w-full h-11 sm:h-12 text-sm sm:text-base font-medium"
+                disabled={processing}
+              >
                 {processing ? "Creating account..." : "Create Account"}
               </Button>
             </form>
 
-            <Separator className="my-6" />
+            <Separator className="my-5 sm:my-6" />
 
             <div className="text-center">
-              <p className="text-sm text-gray-600">
+              <p className="text-sm sm:text-base text-gray-600">
                 Already have an account?{" "}
-                <Link href={route('login')} className="text-blue-600 hover:underline font-medium">
+                <Link
+                  href={route('login')}
+                  className="text-blue-600 hover:underline font-medium whitespace-nowrap"
+                >
                   Sign in
                 </Link>
               </p>
@@ -170,18 +182,30 @@ export default function Register() {
           </CardContent>
         </Card>
 
-        {/* Benefits
-        <Card className="bg-blue-50 border-blue-200">
-          <CardContent className="pt-6">
-            <h3 className="font-semibold mb-3 text-center">What you'll get with Faithful:</h3>
-            <ul className="text-sm space-y-2 text-gray-600">
-              <li>• AI-powered verse suggestions based on your mood</li>
-              <li>• Personal devotion library with privacy controls</li>
-              <li>• Community sharing with anonymous posting</li>
-              <li>• Daily verse recommendations and writing prompts</li>
+        {/* Benefits */}
+        <Card className="mt-6 sm:mt-8 bg-blue-50 border-blue-200 max-w-md mx-auto">
+          <CardContent className="pt-5 sm:pt-6 px-4 sm:px-6 pb-4 sm:pb-5">
+            <h3 className="font-semibold text-center mb-3 text-sm sm:text-base">What you'll get with Faithful:</h3>
+            <ul className="space-y-2 text-sm sm:text-base text-gray-600">
+              <li className="flex items-start gap-2">
+                <span>•</span>
+                <span>AI-powered verse suggestions based on your mood</span>
+              </li>
+              <li className="flex items-start gap-2">
+                <span>•</span>
+                <span>Personal devotion library with privacy controls</span>
+              </li>
+              <li className="flex items-start gap-2">
+                <span>•</span>
+                <span>Community sharing with anonymous posting</span>
+              </li>
+              <li className="flex items-start gap-2">
+                <span>•</span>
+                <span>Daily verse recommendations and writing prompts</span>
+              </li>
             </ul>
           </CardContent>
-        </Card> */}
+        </Card>
         </AuthLayout>
     );
 }

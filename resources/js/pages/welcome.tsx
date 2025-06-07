@@ -45,12 +45,12 @@ export default function Welcome() {
         <div className="min-h-screen bg-gradient-to-b from-blue-50 to-white">
       <Navigation />
       {/* Hero Section */}
-      <section className="py-20 px-4">
+      <section className="py-12 sm:py-16 md:py-20 px-4 sm:px-6">
         <div className="container mx-auto text-center max-w-4xl">
-          <h1 className="text-5xl md:text-6xl font-bold text-gray-900 mb-6">
+          <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 mb-4 sm:mb-6 leading-tight">
             Discover God's Word for Your Heart Today
           </h1>
-          <p className="text-xl text-gray-600 mb-8 max-w-2xl mx-auto">
+          <p className="text-base sm:text-lg md:text-xl text-gray-600 mb-6 sm:mb-8 max-w-2xl mx-auto leading-relaxed">
             Create personalized Bible devotions with AI assistance. Find verses that speak to your mood and share
             meaningful insights with the community.
           </p>
@@ -75,31 +75,33 @@ export default function Welcome() {
             </CardContent>
           </Card>
 
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button size="lg" className="text-lg px-8" asChild>
-              <Link href={route('register')}>
+          <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center">
+            <Button size="lg" className="text-base sm:text-lg px-6 sm:px-8 py-5 sm:py-6" asChild>
+              <Link href={route('register')} className="flex items-center justify-center">
                 Start Your Devotion Journey
-                <ArrowRight className="ml-2 h-5 w-5" />
+                <ArrowRight className="ml-2 h-4 w-4 sm:h-5 sm:w-5 flex-shrink-0" />
               </Link>
             </Button>
-            <Button size="lg" variant="outline" className="text-lg px-8" asChild>
-              <Link href={route('login')}>Read Community Devotions</Link>
+            <Button size="lg" variant="outline" className="text-base sm:text-lg px-6 sm:px-8 py-5 sm:py-6" asChild>
+              <Link href={route('login')} className="flex items-center justify-center">
+                Read Community Devotions
+              </Link>
             </Button>
           </div>
         </div>
       </section>
 
       {/* How It Works */}
-      <section id="how-it-works" className="py-16 px-4 bg-gray-50">
+      <section id="how-it-works" className="py-12 sm:py-16 px-4 sm:px-6 bg-gray-50">
         <div className="container mx-auto max-w-6xl">
-          <h2 className="text-3xl font-bold text-center mb-12">How Faithful Works</h2>
-          <div className="grid md:grid-cols-4 gap-8">
+          <h2 className="text-2xl sm:text-3xl font-bold text-center mb-8 sm:mb-12">How Faithful Works</h2>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8">
             <div className="text-center">
-              <div className="bg-blue-100 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
-                <Heart className="h-8 w-8 text-blue-600" />
+              <div className="bg-blue-100 rounded-full w-14 h-14 sm:w-16 sm:h-16 flex items-center justify-center mx-auto mb-3 sm:mb-4">
+                <Heart className="h-6 w-6 sm:h-8 sm:w-8 text-blue-600" />
               </div>
-              <h3 className="font-semibold mb-2">1. Share Your Mood</h3>
-              <p className="text-gray-600 text-sm">
+              <h3 className="font-semibold text-base sm:text-lg mb-1.5 sm:mb-2">1. Share Your Mood</h3>
+              <p className="text-gray-600 text-xs sm:text-sm leading-relaxed">
                 Tell us how you're feeling - anxious, grateful, struggling, or joyful.
               </p>
             </div>
@@ -135,40 +137,40 @@ export default function Welcome() {
       </section>
 
       {/* Public Devotion Feed */}
-      <section id="devotions" className="py-16 px-4">
+      <section id="devotions" className="py-12 sm:py-16 px-4 sm:px-6">
         <div className="container mx-auto max-w-4xl">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold mb-4">Community Devotions</h2>
-            <p className="text-gray-600">Read inspiring devotions shared by our community members</p>
+          <div className="text-center mb-8 sm:mb-12">
+            <h2 className="text-2xl sm:text-3xl font-bold mb-2 sm:mb-4">Community Devotions</h2>
+            <p className="text-gray-600 text-sm sm:text-base">Read inspiring devotions shared by our community members</p>
           </div>
 
           <div className="space-y-6">
             {featuredDevotions.map((devotion) => (
-              <Card key={devotion.id} className="hover:shadow-lg transition-shadow">
-                <CardHeader>
-                  <div className="flex items-start justify-between">
-                    <div className="flex-1">
-                      <CardTitle className="text-xl mb-2">{devotion.title}</CardTitle>
-                      <CardDescription className="text-base font-medium text-blue-600">
+              <Card key={devotion.id} className="hover:shadow-lg transition-shadow overflow-hidden">
+                <CardHeader className="pb-2 sm:pb-4 px-4 sm:px-6 pt-4 sm:pt-6">
+                  <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-2">
+                    <div className="flex-1 min-w-0">
+                      <CardTitle className="text-lg sm:text-xl mb-1 sm:mb-2 line-clamp-2">{devotion.title}</CardTitle>
+                      <CardDescription className="text-sm sm:text-base font-medium text-blue-600">
                         {devotion.verse}
                       </CardDescription>
                     </div>
-                    <div className="flex items-center space-x-2">
-                      <Badge variant="outline">{devotion.mood}</Badge>
-                      <Globe className="h-4 w-4 text-gray-400" />
+                    <div className="flex items-center gap-2">
+                      <Badge variant="outline" className="text-xs sm:text-sm h-6">{devotion.mood}</Badge>
+                      <Globe className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-gray-400 flex-shrink-0" />
                     </div>
                   </div>
                 </CardHeader>
-                <CardContent>
-                  <blockquote className="border-l-4 border-blue-200 pl-4 mb-4 italic text-gray-700">
+                <CardContent className="px-4 sm:px-6 pb-4 sm:pb-6">
+                  <blockquote className="border-l-2 sm:border-l-4 border-blue-200 pl-3 sm:pl-4 mb-3 sm:mb-4 italic text-gray-700 text-sm sm:text-base leading-relaxed">
                     {devotion.verseText}
                   </blockquote>
-                  <p className="text-gray-600 mb-4">{devotion.excerpt}</p>
+                  <p className="text-gray-600 text-sm sm:text-base mb-3 sm:mb-4 line-clamp-2">{devotion.excerpt}</p>
                   <div className="flex items-center justify-between">
-                    <span className="text-sm text-gray-500">{devotion.timeAgo}</span>
-                    <Button variant="ghost" size="sm" asChild>
-                      <Link href="#">
-                        Read More <ArrowRight className="ml-1 h-4 w-4" />
+                    <span className="text-xs sm:text-sm text-gray-500">{devotion.timeAgo}</span>
+                    <Button variant="ghost" size="sm" className="h-8 sm:h-9 px-2 sm:px-3 text-xs sm:text-sm" asChild>
+                      <Link href="#" className="flex items-center">
+                        Read More <ArrowRight className="ml-1 h-3.5 w-3.5 sm:h-4 sm:w-4 flex-shrink-0" />
                       </Link>
                     </Button>
                   </div>
@@ -186,13 +188,13 @@ export default function Welcome() {
       </section>
 
       {/* Community Impact */}
-      <section className="py-16 px-4 bg-blue-50">
+      <section className="py-12 sm:py-16 px-4 sm:px-6 bg-blue-50">
         <div className="container mx-auto max-w-4xl text-center">
-          <h2 className="text-3xl font-bold mb-8">Join Our Growing Community</h2>
-          <div className="grid md:grid-cols-3 gap-8 mb-8">
-            <div>
-              <div className="text-3xl font-bold text-blue-600 mb-2">1,247</div>
-              <div className="text-gray-600">Believers Connected</div>
+          <h2 className="text-2xl sm:text-3xl font-bold mb-6 sm:mb-8">Join Our Growing Community</h2>
+          <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 sm:gap-6 md:gap-8 mb-6 sm:mb-8">
+            <div className="p-3 sm:p-4 bg-white/50 rounded-lg">
+              <div className="text-2xl sm:text-3xl font-bold text-blue-600 mb-1 sm:mb-2">1,247</div>
+              <div className="text-sm sm:text-base text-gray-600">Believers Connected</div>
             </div>
             <div>
               <div className="text-3xl font-bold text-blue-600 mb-2">3,891</div>

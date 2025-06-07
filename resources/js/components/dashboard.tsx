@@ -54,19 +54,19 @@ export default function UserDashboard() {
       }
 
     return (
-      <div className="w-full py-4">
-        <div className="grid lg:grid-cols-4 gap-4 sm:gap-6">
+      <div className="w-full py-2 sm:py-4 px-2 sm:px-0">
+        <div className="grid lg:grid-cols-4 gap-3 sm:gap-4 md:gap-6">
           {/* Main Content */}
-          <div className="lg:col-span-3 space-y-4 sm:space-y-6">
+          <div className="lg:col-span-3 space-y-3 sm:space-y-4 md:space-y-6">
             {/* Stats Cards */}
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 sm:gap-3">
+            <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-4 gap-2 sm:gap-3">
               <Card className="h-full">
-                <CardContent className="p-3 sm:p-4">
+                <CardContent className="p-2 sm:p-3 md:p-4">
                   <div className="flex items-center space-x-2 sm:space-x-3">
-                    <BookOpen className="h-5 w-5 text-blue-500" />
-                    <div>
-                      <div className="text-2xl font-bold">{stats.totalDevotions}</div>
-                      <div className="text-sm text-gray-500">Total Devotions</div>
+                    <BookOpen className="h-4 sm:h-5 w-4 sm:w-5 text-blue-500 flex-shrink-0" />
+                    <div className="min-w-0">
+                      <div className="text-xl sm:text-2xl font-bold truncate">{stats.totalDevotions}</div>
+                      <div className="text-xs sm:text-sm text-gray-500 truncate">Total Devotions</div>
                     </div>
                   </div>
                 </CardContent>
@@ -112,20 +112,21 @@ export default function UserDashboard() {
             {/* Search and Filter */}
             <Card className="overflow-hidden">
               <CardContent className="p-3 sm:p-4">
-                <div className="flex flex-col sm:flex-row gap-3">
-                  <div className="relative flex-1">
+                <div className="flex flex-col gap-3">
+                  <div className="relative">
                     <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400 pointer-events-none" />
                     <Input
                       placeholder="Search your devotions..."
                       value={searchQuery}
                       onChange={(e) => setSearchQuery(e.target.value)}
-                      className="pl-10"
+                      className="pl-10 w-full"
                     />
                   </div>
-                  <div className="flex flex-wrap gap-2 mt-2 sm:mt-0">
+                  <div className="flex flex-wrap gap-2">
                     <Button
                       variant={filterPrivacy === "all" ? "default" : "outline"}
                       size="sm"
+                      className="flex-1 sm:flex-initial text-xs sm:text-sm"
                       onClick={() => setFilterPrivacy("all")}
                     >
                       All
@@ -133,18 +134,20 @@ export default function UserDashboard() {
                     <Button
                       variant={filterPrivacy === "private" ? "default" : "outline"}
                       size="sm"
+                      className="flex-1 sm:flex-initial text-xs sm:text-sm"
                       onClick={() => setFilterPrivacy("private")}
                     >
-                      <Lock className="h-4 w-4 mr-1" />
-                      Private
+                      <Lock className="h-3 w-3 sm:h-4 sm:w-4 mr-1" />
+                      <span className="hidden xs:inline">Private</span>
                     </Button>
                     <Button
                       variant={filterPrivacy === "public" ? "default" : "outline"}
                       size="sm"
+                      className="flex-1 sm:flex-initial text-xs sm:text-sm"
                       onClick={() => setFilterPrivacy("public")}
                     >
-                      <Globe className="h-4 w-4 mr-1" />
-                      Shared
+                      <Globe className="h-3 w-3 sm:h-4 sm:w-4 mr-1" />
+                      <span className="hidden xs:inline">Shared</span>
                     </Button>
                   </div>
                 </div>
@@ -155,37 +158,37 @@ export default function UserDashboard() {
             <div className="space-y-3 sm:space-y-4">
               {devotions.map((devotion) => (
                 <Card key={devotion.id} className="hover:shadow-md transition-shadow overflow-hidden">
-                  <CardHeader className="p-4 sm:p-6 pb-2 sm:pb-4">
-                    <div className="flex items-start justify-between">
-                      <div className="flex-1">
-                        <CardTitle className="text-lg mb-1">{devotion.title}</CardTitle>
-                        <CardDescription className="font-medium text-blue-600">{devotion.verse}</CardDescription>
+                  <CardHeader className="p-3 sm:p-4 md:p-6 pb-2 sm:pb-3 md:pb-4">
+                    <div className="flex flex-col xs:flex-row xs:items-start justify-between gap-2">
+                      <div className="flex-1 min-w-0">
+                        <CardTitle className="text-base sm:text-lg mb-1 truncate">{devotion.title}</CardTitle>
+                        <CardDescription className="font-medium text-blue-600 text-sm sm:text-base">{devotion.verse}</CardDescription>
                       </div>
-                      <div className="flex items-center space-x-2">
-                        <Badge variant="outline">{devotion.mood}</Badge>
+                      <div className="flex items-center space-x-2 self-start">
+                        <Badge variant="outline" className="text-xs sm:text-sm">{devotion.mood}</Badge>
                         {devotion.isPublic ? (
-                          <Globe className="h-4 w-4 text-blue-500" />
+                          <Globe className="h-4 w-4 text-blue-500 flex-shrink-0" />
                         ) : (
-                          <Lock className="h-4 w-4 text-gray-400" />
+                          <Lock className="h-4 w-4 text-gray-400 flex-shrink-0" />
                         )}
                       </div>
                     </div>
                   </CardHeader>
-                  <CardContent className="p-4 sm:p-6 pt-0 sm:pt-0">
-                    <p className="text-gray-600 mb-3 text-sm sm:text-base">{devotion.excerpt}</p>
-                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-                      <div className="flex flex-wrap gap-1">
+                  <CardContent className="p-3 sm:p-4 md:p-6 pt-0">
+                    <p className="text-gray-600 mb-3 text-sm sm:text-base line-clamp-2">{devotion.excerpt}</p>
+                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 sm:gap-3">
+                      <div className="flex flex-wrap gap-1 overflow-x-auto pb-1 -mx-1 px-1">
                         {devotion.tags.map((tag) => (
-                          <Badge key={tag} variant="secondary" className="text-[10px] sm:text-xs">
+                          <Badge key={tag} variant="secondary" className="text-[10px] sm:text-xs whitespace-nowrap">
                             {tag}
                           </Badge>
                         ))}
                       </div>
                       <div className="flex items-center justify-between sm:justify-end gap-2 text-xs sm:text-sm text-gray-500">
-                        <span className="whitespace-nowrap">{devotion.createdAt}</span>
-                        <Button variant="ghost" size="sm" className="h-8 px-2 sm:px-3" asChild>
-                          <Link href={`/devotions/${devotion.id}`} className="whitespace-nowrap">
-                            View <ArrowRight className="ml-1 h-3 w-3" />
+                        <span className="whitespace-nowrap text-xs sm:text-sm">{devotion.createdAt}</span>
+                        <Button variant="ghost" size="sm" className="h-7 sm:h-8 px-2 sm:px-3 text-xs sm:text-sm" asChild>
+                          <Link href={route('devotion.show', { id: devotion.id })} className="whitespace-nowrap">
+                            View <ArrowRight className="ml-1 h-3 w-3 flex-shrink-0" />
                           </Link>
                         </Button>
                       </div>
@@ -211,13 +214,13 @@ export default function UserDashboard() {
                   </Link>
                 </Button>
                 <Button variant="outline" className="w-full justify-start" asChild>
-                  <Link href="/discover">
+                  <Link href={route("discover")}>
                     <Heart className="h-4 w-4 mr-2" />
                     Mood Check-in
                   </Link>
                 </Button>
                 <Button variant="outline" className="w-full justify-start" asChild>
-                  <Link href="/discover">
+                  <Link href={route("discover")}>
                     <BookOpen className="h-4 w-4 mr-2" />
                     Random Verse
                   </Link>

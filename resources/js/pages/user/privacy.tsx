@@ -1,18 +1,18 @@
 import AppLayout from '@/layouts/app-layout';
 import { type BreadcrumbItem } from '@/types';
-import { DevotionCreation } from '@/components/create-devotion';
+import { PrivacyControls } from '@/components/post-privacy';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
-        title: 'Create Devotion',
-        href: route('devotion.create'),
+        title: 'Privacy',
+        href: route('privacy'),
     },
 ];
 
-export default function CreateDevotion() {
+export default function Privacy() {
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
-            <DevotionCreation />
+            <PrivacyControls />
         </AppLayout>
     );
 }

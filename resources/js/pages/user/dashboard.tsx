@@ -1,6 +1,6 @@
 import AppLayout from '@/layouts/app-layout';
 import { type BreadcrumbItem } from '@/types';
-import UserDashboard from '@/components/user-dashboard';
+import UserDashboard from '@/components/dashboard';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {

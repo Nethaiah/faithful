@@ -1,18 +1,18 @@
 import AppLayout from '@/layouts/app-layout';
 import { type BreadcrumbItem } from '@/types';
-import { DevotionCreation } from '@/components/create-devotion';
+import { CommunityPosts } from '@/components/community-posts'
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
-        title: 'Create Devotion',
-        href: route('devotion.create'),
+        title: 'Community',
+        href: route('community'),
     },
 ];
 
-export default function CreateDevotion() {
+export default function Community() {
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
-            <DevotionCreation />
+            <CommunityPosts />
         </AppLayout>
     );
 }

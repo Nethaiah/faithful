@@ -20,15 +20,15 @@ export function Navigation() {
   const publicNavItems = [
     { href: route('home'), label: "Home", icon: Home },
     { href: route('discover'), label: "Discover", icon: Heart },
-    { href: '#', label: "Community", icon: UsersRound },
+    { href: route('community'), label: "Community", icon: UsersRound },
   ]
 
   const authenticatedNavItems = [
     { href: route('dashboard'), label: "Dashboard", icon: Home },
     { href: route('devotion.create'), label: "Create", icon: Plus },
     { href: route('discover'), label: "Discover", icon: Heart },
-    { href: '#', label: "Community", icon: UsersRound },
-    { href: '#', label: "Privacy", icon: Lock },
+    { href: route('community'), label: "Community", icon: UsersRound },
+    { href: route('privacy'), label: "Privacy", icon: Lock },
   ]
 
   const navItems = auth.user ? authenticatedNavItems : publicNavItems
