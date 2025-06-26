@@ -13,6 +13,13 @@ return new class extends Migration
     {
         Schema::create('devotions', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('user_id')->constrained()->cascadeOnDelete();
+            $table->string('mood');
+            $table->string('verse');
+            $table->text('verse_content');
+            $table->string('title');
+            $table->text('devotion');
+            $table->boolean('is_private')->default(true);
             $table->timestamps();
         });
     }

@@ -9,15 +9,11 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import {
   Heart,
-  MessageCircle,
-  Share2,
   Search,
   Filter,
   BookOpen,
   Users,
-  Sparkles,
   Clock,
-  TrendingUp,
 } from "lucide-react"
 import { cn } from "@/lib/utils"
 
@@ -35,13 +31,9 @@ const communityPosts = [
     content:
       "Today I was reminded of God's faithfulness through the valley. The Lord truly is my shepherd, and even in the darkest moments, His presence brings comfort...",
     verse: "The Lord is my shepherd; I shall not want. - Psalm 23:1",
-    category: "Reflection",
     mood: "Peaceful",
     likes: 24,
-    comments: 8,
-    shares: 3,
     timeAgo: "2 hours ago",
-    featured: true,
   },
   {
     id: 2,
@@ -55,13 +47,9 @@ const communityPosts = [
     content:
       "Sometimes God speaks through the smallest blessings. This morning's sunrise reminded me that every day is a gift from above...",
     verse: "This is the day that the Lord has made; let us rejoice and be glad in it. - Psalm 118:24",
-    category: "Gratitude",
     mood: "Joyful",
     likes: 18,
-    comments: 5,
-    shares: 2,
     timeAgo: "4 hours ago",
-    featured: false,
   },
   {
     id: 3,
@@ -75,13 +63,9 @@ const communityPosts = [
     content:
       "Walking through a difficult season has taught me to lean on God's strength rather than my own. His grace is truly sufficient...",
     verse: "My grace is sufficient for you, for my power is made perfect in weakness. - 2 Corinthians 12:9",
-    category: "Encouragement",
     mood: "Hopeful",
     likes: 32,
-    comments: 12,
-    shares: 7,
     timeAgo: "6 hours ago",
-    featured: false,
   },
 ]
 
@@ -98,7 +82,6 @@ export function CommunityPosts() {
     <Card
       className={cn(
         "mb-4 sm:mb-6 transition-all duration-200 hover:shadow-md overflow-hidden",
-        post.featured && "border-l-4 border-blue-400 bg-blue-50/30",
       )}
     >
       <CardHeader className="pb-2 sm:pb-3 px-3 sm:px-6 pt-3 sm:pt-4">
@@ -115,27 +98,15 @@ export function CommunityPosts() {
                 <h4 className="font-semibold text-gray-900 text-sm sm:text-base truncate">
                   {post.author.name}
                 </h4>
-                {post.author.verified && (
-                  <Sparkles className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-blue-500 flex-shrink-0" />
-                )}
               </div>
               <div className="flex flex-wrap items-center gap-x-2 gap-y-0.5 text-xs sm:text-sm text-gray-500">
                 <span className="flex items-center">
                   <Clock className="h-2.5 w-2.5 sm:h-3 sm:w-3 mr-1" />
                   {post.timeAgo}
                 </span>
-                <Badge variant="secondary" className="text-[10px] sm:text-xs h-5 px-1.5">
-                  {post.category}
-                </Badge>
               </div>
             </div>
           </div>
-          {post.featured && (
-            <Badge className="bg-blue-100 text-blue-700 border-blue-200 text-[10px] sm:text-xs h-5 px-1.5">
-              <TrendingUp className="h-2.5 w-2.5 sm:h-3 sm:w-3 mr-1 flex-shrink-0" />
-              <span className="truncate">Featured</span>
-            </Badge>
-          )}
         </div>
       </CardHeader>
 
@@ -164,22 +135,6 @@ export function CommunityPosts() {
             >
               <Heart className="h-3.5 w-3.5 sm:h-4 sm:w-4 mr-1 flex-shrink-0" />
               <span>{post.likes}</span>
-            </Button>
-            <Button
-              variant="ghost"
-              size="sm"
-              className="text-gray-500 hover:text-blue-500 h-8 px-2 sm:px-3 text-xs sm:text-sm"
-            >
-              <MessageCircle className="h-3.5 w-3.5 sm:h-4 sm:w-4 mr-1 flex-shrink-0" />
-              <span>{post.comments}</span>
-            </Button>
-            <Button
-              variant="ghost"
-              size="sm"
-              className="text-gray-500 hover:text-green-500 h-8 px-2 sm:px-3 text-xs sm:text-sm"
-            >
-              <Share2 className="h-3.5 w-3.5 sm:h-4 sm:w-4 mr-1 flex-shrink-0" />
-              <span>Share</span>
             </Button>
           </div>
 
@@ -223,28 +178,8 @@ export function CommunityPosts() {
         </div>
 
         <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-          <TabsList className="grid w-full grid-cols-3 h-auto p-0.5 bg-gray-100">
-            <TabsTrigger
-              value="feed"
-              className="py-2 text-xs sm:text-sm px-1 sm:px-3 whitespace-nowrap data-[state=active]:shadow-sm"
-            >
-              <span className="truncate">Community Feed</span>
-            </TabsTrigger>
-            <TabsTrigger
-              value="trending"
-              className="py-2 text-xs sm:text-sm px-1 sm:px-3 whitespace-nowrap data-[state=active]:shadow-sm"
-            >
-              <span className="truncate">Trending</span>
-            </TabsTrigger>
-            <TabsTrigger
-              value="following"
-              className="py-2 text-xs sm:text-sm px-1 sm:px-3 whitespace-nowrap data-[state=active]:shadow-sm"
-            >
-              <span className="truncate">Following</span>
-            </TabsTrigger>
-          </TabsList>
 
-          <TabsContent value="feed" className="mt-6">
+          <TabsContent value="feed">
             <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
               {/* Sidebar Filters */}
               <div className="lg:col-span-1">
@@ -265,22 +200,6 @@ export function CommunityPosts() {
                           value={searchQuery}
                           onChange={(e) => setSearchQuery(e.target.value)}
                         />
-                      </div>
-                    </div>
-
-                    <div>
-                      <label className="text-xs sm:text-sm font-medium text-gray-700 mb-1.5 sm:mb-2 block">Category</label>
-                      <div className="flex flex-wrap gap-1.5">
-                        {categories.map((category) => (
-                          <Badge
-                            key={category}
-                            variant={selectedCategory === category ? "default" : "outline"}
-                            className="cursor-pointer text-[10px] sm:text-xs h-6 px-2"
-                            onClick={() => setSelectedCategory(category)}
-                          >
-                            {category}
-                          </Badge>
-                        ))}
                       </div>
                     </div>
 
@@ -325,7 +244,6 @@ export function CommunityPosts() {
 
           <TabsContent value="trending" className="mt-6">
             <div className="text-center py-12">
-              <TrendingUp className="h-12 w-12 text-gray-400 mx-auto mb-4" />
               <h3 className="text-lg font-semibold text-gray-900 mb-2">Trending Posts</h3>
               <p className="text-gray-600">Discover the most popular devotions and discussions</p>
             </div>

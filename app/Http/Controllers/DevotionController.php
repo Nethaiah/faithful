@@ -3,8 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Devotion;
-use App\Http\Requests\StoreDevotionRequest;
-use App\Http\Requests\UpdateDevotionRequest;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Http\Request;
 use Inertia\Inertia;
 
 class DevotionController extends Controller
@@ -22,15 +22,37 @@ class DevotionController extends Controller
      */
     public function create()
     {
-        return Inertia::render('user/create-devotion');
+        $recentDevotions = Auth::user()
+            ->devotions()
+            ->latest()
+            ->take(3)
+            ->get(['title', 'verse', 'is_private', 'created_at']);
+
+        return Inertia::render('user/create-devotion', [
+            'recentDevotions' => $recentDevotions
+        ]);
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreDevotionRequest $request)
+    public function store(Request $request)
     {
-        //
+        $validated = $request->validate([
+            'mood' => ['required', 'string'],
+            'verse' => ['required', 'string'],
+            'verse_content' => ['required', 'string'],
+            'title' => ['required', 'string'],
+            'devotion' => ['required', 'string'],
+            'is_private' => ['required', 'boolean'],
+        ]);
+
+        $devotion = Devotion::create([
+            ...$validated,
+            'user_id' => Auth::id(),
+        ]);
+
+        return to_route('devotion.create');
     }
 
     /**
@@ -52,7 +74,7 @@ class DevotionController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateDevotionRequest $request, Devotion $devotion)
+    public function update(Request $request, Devotion $devotion)
     {
         //
     }
