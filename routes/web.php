@@ -18,6 +18,7 @@ Route::get('/', function () {
 // Dashboard
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
+    Route::get('dashboard/load-more', [DashboardController::class, 'loadMore'])->name('dashboard.load-more');
 });
 
 // Devotion
@@ -32,10 +33,14 @@ Route::get('discover', function () {
 
 // Community
 Route::get('community', [CommunityController::class, 'index'])->name('community');
+Route::get('community/{devotion}', [CommunityController::class, 'show'])->name('devotion.show');
+Route::get('community/load-more', [CommunityController::class, 'loadMore'])->name('community.load-more');
 
 // Privacy
-Route::middleware(['auth','verified'])->group(function () {
-    Route::get('privacy', [PostPrivacyController::class,'index'])->name('privacy');
+Route::middleware(['auth', 'verified'])->group(function () {
+    Route::get('privacy', [PostPrivacyController::class, 'index'])->name('privacy');
+    Route::post('privacy/bulk-update', [PostPrivacyController::class, 'bulkUpdate'])->name('privacy.bulk-update');
+    Route::post('privacy/{devotion}', [PostPrivacyController::class, 'update'])->name('privacy.update');
 });
 
 // Devotion View

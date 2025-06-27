@@ -29,16 +29,19 @@ interface RecentDevotion {
 type InertiaPageProps = {
   csrf: string;
   recentDevotions: RecentDevotion[];
+  user: {
+    // User properties
+  };
 };
 
 type DevotionForm = {
-    _token: string
-    mood: string
-    verse: string
-    verse_content: string
-    title: string
-    devotion: string
-    is_private: boolean
+  _token: string;
+  mood: string;
+  verse: string;
+  verse_content: string;
+  title: string;
+  devotion: string;
+  is_private: boolean;
 }
 
 type VerseSuggestion = {
@@ -283,10 +286,10 @@ export function DevotionCreation() {
 
   const handleMoodSelect = async (mood: string, e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
-    
+
     // Prevent multiple clicks while loading
     if (isFetchingMood) return;
-    
+
     // Toggle mood selection if already selected
     const newMood = selectedMood === mood ? '' : mood;
     setSelectedMood(newMood);
@@ -298,7 +301,7 @@ export function DevotionCreation() {
           reference: `Finding verses for ${newMood}...`,
           preview: 'Praying for the perfect verse for you...',
         }]);
-        
+
         await fetchVerseSuggestions(newMood);
       } catch (error) {
         console.error('Error in handleMoodSelect:', error);
@@ -518,6 +521,12 @@ export function DevotionCreation() {
     });
   }
 
+  const togglePrivacy = () => {
+    setIsPublic(!isPublic);
+  };
+
+  // Default privacy is set to private (isPublic = false)
+
   return (
     <div className="min-h-screen bg-gray-50">
       <div className="container mx-auto max-w-7xl px-4 py-4">
@@ -563,7 +572,7 @@ export function DevotionCreation() {
                           key={mood.name}
                           onClick={(e) => handleMoodSelect(mood.name, e)}
                           disabled={isFetchingMood}
-                          className={`flex items-center justify-center p-3 rounded-lg transition-all ${mood.color} 
+                          className={`flex items-center justify-center p-3 rounded-lg transition-all ${mood.color}
                             ${selectedMood === mood.name ? 'ring-2 ring-offset-2 ring-blue-500' : ''}
                             ${isFetchingMood ? 'opacity-50 cursor-not-allowed' : 'hover:opacity-90'}`}
                         >

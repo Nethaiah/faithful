@@ -1,68 +1,214 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Switch } from "@/components/ui/switch"
 import { Badge } from "@/components/ui/badge"
 import { Separator } from "@/components/ui/separator"
 import { Checkbox } from "@/components/ui/checkbox"
-import { Lock, Globe, Shield, Users, Settings, AlertTriangle, ArrowLeft } from "lucide-react"
-import { Link } from "@inertiajs/react"
+import { Lock, Globe, Settings, AlertTriangle, ArrowLeft, Loader2, Shield } from "lucide-react"
+import { Link, usePage } from "@inertiajs/react"
+import { toast } from "sonner"
+
+// Define the shape of the page props we expect from the backend
+interface BackendProps {
+  devotions: Devotion[]
+  defaultPrivacy: string
+  stats: {
+    privateCount: number
+    publicCount: number
+  }
+}
+
+// Extend Inertia's PageProps with our custom props
+declare module '@inertiajs/core' {
+  interface PageProps {
+    csrf: string
+  }
+}
+
+// Type for the combined page props
+type PageProps = BackendProps & {
+  csrf: string
+}
+interface Devotion {
+  id: number
+  title: string
+  verse: string
+  isPublic: boolean
+  createdAt: string
+}
 
 export function PrivacyControls() {
+  // Use type assertion since we know the shape of our props
+  const { props } = usePage()
+  const pageProps = props as unknown as PageProps
+
+  const {
+    devotions: initialDevotions = [],
+    defaultPrivacy: initialDefaultPrivacy = 'private',
+    stats: initialStats = { privateCount: 0, publicCount: 0 }
+  } = pageProps
+
+  const [isLoading, setIsLoading] = useState(false)
   const [bulkEditMode, setBulkEditMode] = useState(false)
   const [selectedDevotions, setSelectedDevotions] = useState<number[]>([])
-  const [defaultPrivacy, setDefaultPrivacy] = useState("private")
+  const [defaultPrivacy, setDefaultPrivacy] = useState(initialDefaultPrivacy)
+  const [devotions, setDevotions] = useState<Devotion[]>(initialDevotions)
+  const [stats, setStats] = useState<{ privateCount: number; publicCount: number }>(initialStats)
 
-  const devotions = [
-    {
-      id: 1,
-      title: "Finding Peace in the Storm",
-      verse: "Philippians 4:7",
-      isPublic: false,
-      createdAt: "2024-01-15",
-      views: 0,
-      communityReads: 0,
-    },
-    {
-      id: 2,
-      title: "Gratitude in Every Season",
-      verse: "1 Thessalonians 5:18",
-      isPublic: true,
-      createdAt: "2024-01-14",
-      views: 45,
-      communityReads: 23,
-    },
-    {
-      id: 3,
-      title: "Strength for the Journey",
-      verse: "Isaiah 40:31",
-      isPublic: false,
-      createdAt: "2024-01-13",
-      views: 0,
-      communityReads: 0,
-    },
-    {
-      id: 4,
-      title: "Walking in Faith",
-      verse: "Hebrews 11:1",
-      isPublic: true,
-      createdAt: "2024-01-12",
-      views: 67,
-      communityReads: 34,
-    },
-  ]
+  // Update local state when props change
+  useEffect(() => {
+    setDevotions(initialDevotions)
+    setDefaultPrivacy(initialDefaultPrivacy)
+    setStats(initialStats)
+  }, [initialDevotions, initialDefaultPrivacy, initialStats])
 
-  const handleBulkPrivacyChange = (makePublic: boolean) => {
-    // Handle bulk privacy change logic here
-    console.log(`Making ${selectedDevotions.length} devotions ${makePublic ? "public" : "private"}`)
-    setSelectedDevotions([])
-    setBulkEditMode(false)
+  const handleBulkPrivacyChange = async (makePublic: boolean) => {
+    if (selectedDevotions.length === 0) return
+
+    try {
+      setIsLoading(true)
+      const response = await fetch(route('privacy.bulk-update'), {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || '',
+        },
+        body: JSON.stringify({
+          devotion_ids: selectedDevotions,
+          is_public: makePublic,
+        }),
+      })
+
+      const data = await response.json()
+
+      if (response.ok) {
+        // Update local state to reflect changes
+        setDevotions(prevDevotions =>
+          prevDevotions.map(devotion =>
+            selectedDevotions.includes(devotion.id)
+              ? { ...devotion, isPublic: makePublic }
+              : devotion
+          )
+        )
+
+        // Update stats
+        const count = selectedDevotions.length
+        setStats(prev => ({
+          privateCount: makePublic ? prev.privateCount - count : prev.privateCount + count,
+          publicCount: makePublic ? prev.publicCount + count : prev.publicCount - count,
+        }))
+
+        toast.success(data.message)
+        setSelectedDevotions([])
+        setBulkEditMode(false)
+      } else {
+        throw new Error(data.message || 'Failed to update privacy settings')
+      }
+    } catch (error) {
+      console.error('Error updating privacy settings:', error)
+      toast.error(error instanceof Error ? error.message : 'An error occurred while updating privacy settings')
+    } finally {
+      setIsLoading(false)
+    }
   }
 
   const toggleDevotionSelection = (id: number) => {
-    setSelectedDevotions((prev) => (prev.includes(id) ? prev.filter((devotionId) => devotionId !== id) : [...prev, id]))
+    setSelectedDevotions((prev) =>
+      prev.includes(id)
+        ? prev.filter((devotionId) => devotionId !== id)
+        : [...prev, id]
+    )
+  }
+
+  const handleDevotionPrivacyChange = async (devotionId: number, makePublic: boolean) => {
+    try {
+      setIsLoading(true);
+      const response = await fetch(route('privacy.update', devotionId), {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+          'X-Requested-With': 'XMLHttpRequest',
+          'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || '',
+        },
+        body: JSON.stringify({
+          is_public: makePublic,
+        }),
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json().catch(() => ({}));
+        throw new Error(errorData.message || 'Failed to update privacy setting');
+      }
+
+      const data = await response.json();
+
+      // Update local state to reflect changes
+      setDevotions(prevDevotions =>
+        prevDevotions.map(devotion =>
+          devotion.id === devotionId
+            ? { ...devotion, isPublic: makePublic }
+            : devotion
+        )
+      );
+
+      // Update stats
+      setStats(prev => ({
+        privateCount: makePublic ? prev.privateCount - 1 : prev.privateCount + 1,
+        publicCount: makePublic ? prev.publicCount + 1 : prev.publicCount - 1,
+      }));
+
+      toast.success(data.message || 'Privacy updated successfully');
+    } catch (error) {
+      console.error('Error updating devotion privacy:', error);
+      toast.error(error instanceof Error ? error.message : 'An error occurred while updating privacy');
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleDefaultPrivacyChange = async (privacy: 'private' | 'public') => {
+    // Optimistically update the UI
+    const previousPrivacy = defaultPrivacy
+    setDefaultPrivacy(privacy)
+
+    try {
+      const response = await fetch(route('privacy.default.update'), {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || '',
+          'X-Requested-With': 'XMLHttpRequest',
+        },
+        body: JSON.stringify({
+          default_privacy: privacy,
+        }),
+      })
+
+      const data = await response.json()
+
+      if (!response.ok) {
+        throw new Error(data.message || 'Failed to update default privacy setting')
+      }
+
+      toast.success('Default privacy setting updated successfully')
+    } catch (error) {
+      console.error('Error updating default privacy:', error)
+      // Revert on error
+      setDefaultPrivacy(previousPrivacy)
+      toast.error(error instanceof Error ? error.message : 'An error occurred while updating default privacy')
+    }
+  }
+
+  if (isLoading && devotions.length === 0) {
+    return (
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <Loader2 className="h-8 w-8 animate-spin text-gray-500" />
+      </div>
+    )
   }
 
   return (
@@ -100,63 +246,7 @@ export function PrivacyControls() {
                 <div className="text-sm text-gray-500">Shared with Community</div>
               </CardContent>
             </Card>
-
-            <Card>
-              <CardContent className="p-6 text-center">
-                <Users className="h-8 w-8 text-green-500 mx-auto mb-2" />
-                <div className="text-2xl font-bold text-green-600">
-                  {devotions.filter((d) => d.isPublic).reduce((sum, d) => sum + d.communityReads, 0)}
-                </div>
-                <div className="text-sm text-gray-500">Total Community Reads</div>
-              </CardContent>
-            </Card>
           </div>
-
-          {/* Default Privacy Settings */}
-          <Card className="mb-8">
-            <CardHeader>
-              <CardTitle className="flex items-center space-x-2">
-                <Settings className="h-5 w-5" />
-                <span>Default Privacy Settings</span>
-              </CardTitle>
-              <CardDescription>Choose the default privacy level for new devotions</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-4">
-                <div className="flex items-center justify-between p-4 border rounded-lg">
-                  <div className="flex items-center space-x-3">
-                    <Lock className="h-5 w-5 text-gray-500" />
-                    <div>
-                      <div className="font-medium">Keep Private by Default</div>
-                      <div className="text-sm text-gray-500">
-                        New devotions will be private unless you choose to share them
-                      </div>
-                    </div>
-                  </div>
-                  <Switch
-                    checked={defaultPrivacy === "private"}
-                    onCheckedChange={(checked) => setDefaultPrivacy(checked ? "private" : "public")}
-                  />
-                </div>
-
-                <div className="flex items-center justify-between p-4 border rounded-lg">
-                  <div className="flex items-center space-x-3">
-                    <Globe className="h-5 w-5 text-blue-500" />
-                    <div>
-                      <div className="font-medium">Share with Community by Default</div>
-                      <div className="text-sm text-gray-500">
-                        New devotions will be shared publicly unless you choose to keep them private
-                      </div>
-                    </div>
-                  </div>
-                  <Switch
-                    checked={defaultPrivacy === "public"}
-                    onCheckedChange={(checked) => setDefaultPrivacy(checked ? "public" : "private")}
-                  />
-                </div>
-              </div>
-            </CardContent>
-          </Card>
 
           {/* Bulk Privacy Management */}
           <Card className="mb-8">
@@ -166,8 +256,8 @@ export function PrivacyControls() {
                   <CardTitle className="text-lg sm:text-xl">Manage Existing Devotions</CardTitle>
                   <CardDescription className="text-sm sm:text-base">Change privacy settings for multiple devotions at once</CardDescription>
                 </div>
-                <Button 
-                  variant={bulkEditMode ? "default" : "outline"} 
+                <Button
+                  variant={bulkEditMode ? "default" : "outline"}
                   onClick={() => setBulkEditMode(!bulkEditMode)}
                   className="w-full sm:w-auto"
                 >
@@ -181,17 +271,17 @@ export function PrivacyControls() {
                   <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
                     <span className="font-medium text-sm sm:text-base">{selectedDevotions.length} devotion(s) selected</span>
                     <div className="flex flex-col sm:flex-row gap-2 w-full sm:w-auto">
-                      <Button 
-                        size="sm" 
-                        variant="outline" 
+                      <Button
+                        size="sm"
+                        variant="outline"
                         onClick={() => handleBulkPrivacyChange(false)}
                         className="w-full sm:w-auto justify-center sm:justify-start"
                       >
                         <Lock className="h-4 w-4 mr-1 flex-shrink-0" />
                         <span>Make Private</span>
                       </Button>
-                      <Button 
-                        size="sm" 
+                      <Button
+                        size="sm"
                         onClick={() => handleBulkPrivacyChange(true)}
                         className="w-full sm:w-auto justify-center sm:justify-start"
                       >
@@ -225,19 +315,6 @@ export function PrivacyControls() {
                     </div>
 
                     <div className="flex items-center justify-between w-full sm:w-auto sm:flex-nowrap gap-2 sm:gap-4">
-                      <div className="text-right sm:text-left text-xs sm:text-sm">
-                        {devotion.isPublic ? (
-                          <div className="text-blue-600">
-                            <div className="font-medium">{devotion.communityReads} reads</div>
-                            <div className="text-[11px] sm:text-xs">Community</div>
-                          </div>
-                        ) : (
-                          <div className="text-gray-500">
-                            <div className="font-medium">Private</div>
-                            <div className="text-[11px] sm:text-xs">Only you</div>
-                          </div>
-                        )}
-                      </div>
 
                       <div className="flex items-center gap-2">
                         <div className="hidden sm:block">
@@ -261,11 +338,9 @@ export function PrivacyControls() {
                             id={`toggle-${devotion.id}`}
                             checked={devotion.isPublic}
                             onCheckedChange={(checked) => {
-                              // Handle individual privacy toggle
-                              console.log(
-                                `Toggling privacy for devotion ${devotion.id} to ${checked ? "public" : "private"}`,
-                              )
+                              handleDevotionPrivacyChange(devotion.id, checked)
                             }}
+                            disabled={isLoading}
                             className="ml-auto"
                           />
                         )}
