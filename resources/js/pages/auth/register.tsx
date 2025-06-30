@@ -181,31 +181,6 @@ export default function Register() {
             </div>
           </CardContent>
         </Card>
-
-        {/* Benefits */}
-        <Card className="mt-6 sm:mt-8 bg-blue-50 border-blue-200 max-w-md mx-auto">
-          <CardContent className="pt-5 sm:pt-6 px-4 sm:px-6 pb-4 sm:pb-5">
-            <h3 className="font-semibold text-center mb-3 text-sm sm:text-base">What you'll get with Faithful:</h3>
-            <ul className="space-y-2 text-sm sm:text-base text-gray-600">
-              <li className="flex items-start gap-2">
-                <span>•</span>
-                <span>AI-powered verse suggestions based on your mood</span>
-              </li>
-              <li className="flex items-start gap-2">
-                <span>•</span>
-                <span>Personal devotion library with privacy controls</span>
-              </li>
-              <li className="flex items-start gap-2">
-                <span>•</span>
-                <span>Community sharing with anonymous posting</span>
-              </li>
-              <li className="flex items-start gap-2">
-                <span>•</span>
-                <span>Daily verse recommendations and writing prompts</span>
-              </li>
-            </ul>
-          </CardContent>
-        </Card>
         </AuthLayout>
     );
 }

@@ -152,12 +152,6 @@ export function CommunityPosts({
               </div>
             </div>
           </div>
-          <Avatar className="h-10 w-10 flex-shrink-0">
-            <AvatarImage src={post.user?.avatar} alt={post.user?.name} />
-            <AvatarFallback className="bg-blue-100 text-blue-700 text-xs">
-              {post.user?.name?.split(' ').map(n => n[0]).join('').toUpperCase().substring(0, 2) || '??'}
-            </AvatarFallback>
-          </Avatar>
         </div>
       </CardHeader>
       <CardContent className="p-3 sm:p-4 md:p-6 pt-0">
