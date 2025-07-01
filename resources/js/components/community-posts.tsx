@@ -162,7 +162,7 @@ export function CommunityPosts({
           >
             <Link href={route('devotion.show', { id: post.id })}>
               View Devotion
-              <ArrowRight className="ml-1.5 h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5" />
+              <ArrowRight className="ml-1.5 h-3.5 w-3.5" />
             </Link>
           </Button>
         </div>
