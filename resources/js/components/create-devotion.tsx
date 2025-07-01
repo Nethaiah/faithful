@@ -529,19 +529,15 @@ export function DevotionCreation() {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      <div className="container mx-auto max-w-7xl px-4 py-4">
-        {/* Header */}
-        <div className="mb-6">
-          <Button variant="ghost" size="sm" asChild className="mb-4">
-            <Link href={route('dashboard')} className="flex items-center">
-              <ArrowLeft className="h-4 w-4 mr-2" />
-              Back to Dashboard
-            </Link>
-          </Button>
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">Create Your Devotion</h1>
-          <p className="text-gray-600">Let AI help you discover God's word for your heart today</p>
+      <div className="container mx-auto max-w-7xl px-2 py-4">
+        <div className="mb-6 text-center px-1">
+          <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900 mb-2 sm:mb-3 md:mb-4 leading-tight">
+            Create a New Devotion
+          </h1>
+          <p className="text-sm sm:text-base md:text-lg text-gray-600 max-w-2xl mx-auto">
+            Reflect, write, and share your spiritual journey.
+          </p>
         </div>
-
         <form method="POST" onSubmit={handleSubmit}>
           <input type="hidden" name="_token" value={csrf} />
         <div className="grid lg:grid-cols-3 gap-8">
@@ -550,7 +546,7 @@ export function DevotionCreation() {
               {/* Mood Selection */}
               <Card className="mb-6 overflow-hidden">
                 <CardHeader className="pb-3 sm:pb-4">
-                  <CardTitle className="flex items-center space-x-2 text-xl sm:text-2xl">
+                  <CardTitle className="flex items-center space-x-2 text-base sm:text-xl">
                     <Heart className="h-5 w-5 sm:h-6 sm:w-6 text-red-500 flex-shrink-0" />
                     <span>How are you feeling today?</span>
                   </CardTitle>
@@ -814,7 +810,7 @@ export function DevotionCreation() {
               {/* Recent Devotions */}
               <Card>
                 <CardHeader>
-                  <CardTitle className="text-lg">Your Recent Devotions</CardTitle>
+                  <CardTitle className="text-base">Your Recent Devotions</CardTitle>
                 </CardHeader>
                 <CardContent>
                   <div className="space-y-3">
@@ -850,7 +846,7 @@ export function DevotionCreation() {
               {/* Tips */}
               <Card>
                 <CardHeader>
-                  <CardTitle className="text-lg">Writing Tips</CardTitle>
+                  <CardTitle className="text-base">Writing Tips</CardTitle>
                 </CardHeader>
                 <CardContent>
                   <ul className="text-sm space-y-2 text-gray-600">

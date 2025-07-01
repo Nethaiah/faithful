@@ -289,24 +289,6 @@ export default function MoodDiscovery() {
         {/* Header */}
         <div className="mb-6 sm:mb-8">
           <div className="flex items-center mb-3 sm:mb-4">
-            <Button
-              variant="ghost"
-              size="sm"
-              className="px-2 sm:px-3 py-1.5 h-auto"
-              asChild
-            >
-              {auth.user ? (
-                    <Link href={route('dashboard')}>
-                      <ArrowLeft className="h-4 w-4 mr-1.5 sm:mr-2 flex-shrink-0" />
-                      <span className="text-sm sm:text-base">Back to Dashboard</span>
-                    </Link>
-                  ) : (
-                    <Link href={route('home')}>
-                      <ArrowLeft className="h-4 w-4 mr-1.5 sm:mr-2 flex-shrink-0" />
-                      <span className="text-sm sm:text-base">Back to Home</span>
-                    </Link>
-                  )}
-                </Button>
             </div>
             <div className="text-center px-1">
               <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900 mb-2 sm:mb-3 md:mb-4 leading-tight">

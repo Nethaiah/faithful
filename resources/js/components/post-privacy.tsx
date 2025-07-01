@@ -7,7 +7,7 @@ import { Switch } from "@/components/ui/switch"
 import { Badge } from "@/components/ui/badge"
 import { Separator } from "@/components/ui/separator"
 import { Checkbox } from "@/components/ui/checkbox"
-import { Lock, Globe, Settings, AlertTriangle, ArrowLeft, Loader2, Shield } from "lucide-react"
+import { Lock, Globe, Settings, AlertTriangle, ArrowLeft, Loader2, Shield, X, Edit3 } from "lucide-react"
 import { Link, usePage } from "@inertiajs/react"
 import { toast } from "sonner"
 
@@ -213,193 +213,212 @@ export function PrivacyControls() {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      <div className="mx-auto max-w-7xl px-4 py-4">
-        <div>
-          {/* Header */}
-          <div className="mb-8">
-            <div className="flex items-center space-x-4 mb-4">
-              <Button variant="ghost" size="sm" asChild>
-                <Link href={route('dashboard')}>
-                  <ArrowLeft className="h-4 w-4 mr-2" />
-                  Back to Dashboard
-                </Link>
-              </Button>
-            </div>
-            <h1 className="text-3xl font-bold text-gray-900 mb-2">Privacy & Sharing Settings</h1>
-            <p className="text-gray-600">Manage who can see your devotions and control your sharing preferences</p>
-          </div>
+      <div className="container mx-auto max-w-7xl px-4 py-6">
 
-          {/* Privacy Overview */}
-          <div className="grid md:grid-cols-3 gap-6 mb-8">
-            <Card>
-              <CardContent className="p-6 text-center">
-                <Lock className="h-8 w-8 text-gray-500 mx-auto mb-2" />
-                <div className="text-2xl font-bold text-gray-900">{devotions.filter((d) => !d.isPublic).length}</div>
-                <div className="text-sm text-gray-500">Private Devotions</div>
-              </CardContent>
-            </Card>
+        <div className="mb-6 text-center px-1">
+          <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900 mb-2 sm:mb-3 md:mb-4 leading-tight">
+            Devotion Privacy Settings
+          </h1>
+          <p className="text-sm sm:text-base md:text-lg text-gray-600 max-w-2xl mx-auto">
+            Manage who can see your devotions and control your sharing preferences.
+          </p>
+        </div>
 
-            <Card>
-              <CardContent className="p-6 text-center">
-                <Globe className="h-8 w-8 text-blue-500 mx-auto mb-2" />
-                <div className="text-2xl font-bold text-blue-600">{devotions.filter((d) => d.isPublic).length}</div>
-                <div className="text-sm text-gray-500">Shared with Community</div>
-              </CardContent>
-            </Card>
-          </div>
-
-          {/* Bulk Privacy Management */}
-          <Card className="mb-8">
-            <CardHeader>
-              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-                <div className="mb-2 sm:mb-0">
-                  <CardTitle className="text-lg sm:text-xl">Manage Existing Devotions</CardTitle>
-                  <CardDescription className="text-sm sm:text-base">Change privacy settings for multiple devotions at once</CardDescription>
+        {/* Privacy Overview */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
+          <Card className="border border-gray-100 shadow-sm hover:shadow-md transition-shadow">
+            <CardContent className="p-5">
+              <div className="flex items-center space-x-4">
+                <div className="p-2.5 rounded-lg bg-gray-100">
+                  <Lock className="h-5 w-5 text-gray-600" />
                 </div>
-                <Button
-                  variant={bulkEditMode ? "default" : "outline"}
-                  onClick={() => setBulkEditMode(!bulkEditMode)}
-                  className="w-full sm:w-auto"
-                >
-                  {bulkEditMode ? "Cancel" : "Bulk Edit"}
-                </Button>
-              </div>
-            </CardHeader>
-            <CardContent>
-              {bulkEditMode && selectedDevotions.length > 0 && (
-                <div className="mb-4 p-4 bg-blue-50 border border-blue-200 rounded-lg">
-                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-                    <span className="font-medium text-sm sm:text-base">{selectedDevotions.length} devotion(s) selected</span>
-                    <div className="flex flex-col sm:flex-row gap-2 w-full sm:w-auto">
-                      <Button
-                        size="sm"
-                        variant="outline"
-                        onClick={() => handleBulkPrivacyChange(false)}
-                        className="w-full sm:w-auto justify-center sm:justify-start"
-                      >
-                        <Lock className="h-4 w-4 mr-1 flex-shrink-0" />
-                        <span>Make Private</span>
-                      </Button>
-                      <Button
-                        size="sm"
-                        onClick={() => handleBulkPrivacyChange(true)}
-                        className="w-full sm:w-auto justify-center sm:justify-start"
-                      >
-                        <Globe className="h-4 w-4 mr-1 flex-shrink-0" />
-                        <span>Make Public</span>
-                      </Button>
-                    </div>
-                  </div>
+                <div className="min-w-0">
+                  <div className="text-2xl font-bold text-gray-900">{devotions.filter((d) => !d.isPublic).length}</div>
+                  <div className="text-sm text-gray-500">Private Devotions</div>
                 </div>
-              )}
-
-              <div className="space-y-3">
-                {devotions.map((devotion) => (
-                  <div key={devotion.id} className="flex flex-col sm:flex-row items-start sm:items-center justify-between p-3 sm:p-4 border rounded-lg gap-3 sm:gap-4">
-                    <div className="flex items-start w-full">
-                      {bulkEditMode && (
-                        <div className="mr-2 mt-1">
-                          <Checkbox
-                            id={`devotion-${devotion.id}`}
-                            checked={selectedDevotions.includes(devotion.id)}
-                            onCheckedChange={() => toggleDevotionSelection(devotion.id)}
-                          />
-                        </div>
-                      )}
-                      <div className="flex-1 min-w-0">
-                        <div className="font-medium text-sm sm:text-base">{devotion.title}</div>
-                        <div className="text-xs sm:text-sm text-gray-500">
-                          {devotion.verse} • {devotion.createdAt}
-                        </div>
-                      </div>
-                    </div>
-
-                    <div className="flex items-center justify-between w-full sm:w-auto sm:flex-nowrap gap-2 sm:gap-4">
-
-                      <div className="flex items-center gap-2">
-                        <div className="hidden sm:block">
-                          <Badge variant={devotion.isPublic ? "default" : "secondary"} className="text-xs">
-                            {devotion.isPublic ? (
-                              <>
-                                <Globe className="h-3 w-3 mr-1" />
-                                Public
-                              </>
-                            ) : (
-                              <>
-                                <Lock className="h-3 w-3 mr-1" />
-                                Private
-                              </>
-                            )}
-                          </Badge>
-                        </div>
-
-                        {!bulkEditMode && (
-                          <Switch
-                            id={`toggle-${devotion.id}`}
-                            checked={devotion.isPublic}
-                            onCheckedChange={(checked) => {
-                              handleDevotionPrivacyChange(devotion.id, checked)
-                            }}
-                            disabled={isLoading}
-                            className="ml-auto"
-                          />
-                        )}
-                      </div>
-                    </div>
-                  </div>
-                ))}
               </div>
             </CardContent>
           </Card>
 
-          {/* Privacy Guidelines */}
-          <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center space-x-2">
-                <Shield className="h-5 w-5 text-green-600" />
-                <span>Privacy & Community Guidelines</span>
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-4">
-                <div className="flex items-start space-x-3">
-                  <Lock className="h-5 w-5 text-gray-500 mt-0.5" />
-                  <div>
-                    <div className="font-medium">Private Devotions</div>
-                    <div className="text-sm text-gray-600">
-                      Only you can see private devotions. They're perfect for personal reflections, sensitive topics, or
-                      when you're still processing your thoughts.
-                    </div>
-                  </div>
+          <Card className="border border-gray-100 shadow-sm hover:shadow-md transition-shadow">
+            <CardContent className="p-5">
+              <div className="flex items-center space-x-4">
+                <div className="p-2.5 rounded-lg bg-blue-50">
+                  <Globe className="h-5 w-5 text-blue-600" />
                 </div>
-
-                <div className="flex items-start space-x-3">
-                  <Globe className="h-5 w-5 text-blue-500 mt-0.5" />
-                  <div>
-                    <div className="font-medium">Public Devotions</div>
-                    <div className="text-sm text-gray-600">
-                      Public devotions are shared anonymously with the community. No personal information is displayed,
-                      and they help encourage other believers.
-                    </div>
-                  </div>
-                </div>
-
-                <Separator />
-
-                <div className="flex items-start space-x-3">
-                  <AlertTriangle className="h-5 w-5 text-orange-500 mt-0.5" />
-                  <div>
-                    <div className="font-medium">Community Standards</div>
-                    <div className="text-sm text-gray-600">
-                      Public devotions should be encouraging, biblically sound, and appropriate for all ages. Content is
-                      moderated to maintain a safe, uplifting environment.
-                    </div>
-                  </div>
+                <div className="min-w-0">
+                  <div className="text-2xl font-bold text-gray-900">{devotions.filter((d) => d.isPublic).length}</div>
+                  <div className="text-sm text-gray-500">Shared with Community</div>
                 </div>
               </div>
             </CardContent>
           </Card>
         </div>
+
+        {/* Bulk Privacy Management */}
+        <Card className="mb-6 border border-gray-100 shadow-sm">
+          <CardHeader className="pb-3">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+              <div>
+                <CardTitle className="text-lg">Manage Devotions</CardTitle>
+                <CardDescription className="text-sm">
+                  {bulkEditMode
+                    ? 'Select devotions to update their privacy settings'
+                    : `You have ${devotions.length} devotion${devotions.length !== 1 ? 's' : ''} in total`}
+                </CardDescription>
+              </div>
+              <Button
+                variant={bulkEditMode ? "outline" : "default"}
+                size="sm"
+                onClick={() => setBulkEditMode(!bulkEditMode)}
+                className="h-9"
+              >
+                {bulkEditMode ? (
+                  <>
+                    <X className="h-4 w-4 mr-2" />
+                    Cancel
+                  </>
+                ) : (
+                  <>
+                    <Edit3 className="h-4 w-4 mr-2" />
+                    Bulk Edit
+                  </>
+                )}
+              </Button>
+            </div>
+          </CardHeader>
+          <CardContent className="pt-0">
+            {bulkEditMode && selectedDevotions.length > 0 && (
+              <div className="mb-4 p-4 bg-blue-50 border border-blue-100 rounded-lg">
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                  <span className="text-sm font-medium text-blue-800">
+                    {selectedDevotions.length} devotion{selectedDevotions.length !== 1 ? 's' : ''} selected
+                  </span>
+                  <div className="flex flex-col sm:flex-row gap-2 w-full sm:w-auto">
+                    <Button
+                      size="sm"
+                      variant="outline"
+                      onClick={() => handleBulkPrivacyChange(false)}
+                      className="h-8 px-3 text-sm justify-center sm:justify-start gap-1.5"
+                    >
+                      <Lock className="h-3.5 w-3.5" />
+                      Make Private
+                    </Button>
+                    <Button
+                      size="sm"
+                      onClick={() => handleBulkPrivacyChange(true)}
+                      className="h-8 px-3 text-sm justify-center sm:justify-start gap-1.5"
+                    >
+                      <Globe className="h-3.5 w-3.5" />
+                      Make Public
+                    </Button>
+                  </div>
+                </div>
+              </div>
+            )}
+          <div className="space-y-3">
+            {devotions.map((devotion) => (
+              <div key={devotion.id} className="flex flex-col sm:flex-row items-start sm:items-center justify-between p-3 sm:p-4 border rounded-lg gap-3 sm:gap-4">
+                <div className="flex items-start w-full">
+                  {bulkEditMode && (
+                    <div className="mr-2 mt-1">
+                      <Checkbox
+                        id={`devotion-${devotion.id}`}
+                        checked={selectedDevotions.includes(devotion.id)}
+                        onCheckedChange={() => toggleDevotionSelection(devotion.id)}
+                      />
+                    </div>
+                  )}
+                  <div className="flex-1 min-w-0">
+                    <div className="font-medium text-sm sm:text-base">{devotion.title}</div>
+                    <div className="text-xs sm:text-sm text-gray-500">
+                      {devotion.verse} • {devotion.createdAt}
+                    </div>
+                  </div>
+                </div>
+                <div className="flex items-center justify-between w-full sm:w-auto sm:flex-nowrap gap-2 sm:gap-4">
+                  <div className="flex items-center gap-2">
+                    <div className="hidden sm:block">
+                      <Badge variant={devotion.isPublic ? "default" : "secondary"} className="text-xs">
+                        {devotion.isPublic ? (
+                          <>
+                            <Globe className="h-3 w-3 mr-1" />
+                            Public
+                          </>
+                        ) : (
+                          <>
+                            <Lock className="h-3 w-3 mr-1" />
+                            Private
+                          </>
+                        )}
+                      </Badge>
+                    </div>
+                    {!bulkEditMode && (
+                      <Switch
+                        id={`toggle-${devotion.id}`}
+                        checked={devotion.isPublic}
+                        onCheckedChange={(checked) => {
+                          handleDevotionPrivacyChange(devotion.id, checked)
+                        }}
+                        disabled={isLoading}
+                        className="ml-auto"
+                      />
+                    )}
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* Privacy Guidelines */}
+      <Card>
+          <CardHeader>
+            <CardTitle className="flex items-center space-x-2">
+              <Shield className="h-5 w-5 text-green-600" />
+              <span>Privacy & Community Guidelines</span>
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="space-y-4">
+              <div className="flex items-start space-x-3">
+                <Lock className="h-5 w-5 text-gray-500 mt-0.5" />
+                <div>
+                  <div className="font-medium">Private Devotions</div>
+                  <div className="text-sm text-gray-600">
+                    Only you can see private devotions. They're perfect for personal reflections, sensitive topics, or
+                    when you're still processing your thoughts.
+                  </div>
+                </div>
+              </div>
+
+              <div className="flex items-start space-x-3">
+                <Globe className="h-5 w-5 text-blue-500 mt-0.5" />
+                <div>
+                  <div className="font-medium">Public Devotions</div>
+                  <div className="text-sm text-gray-600">
+                    Public devotions are shared anonymously with the community. No personal information is displayed,
+                    and they help encourage other believers.
+                  </div>
+                </div>
+              </div>
+
+              <Separator />
+
+              <div className="flex items-start space-x-3">
+                <AlertTriangle className="h-5 w-5 text-orange-500 mt-0.5" />
+                <div>
+                  <div className="font-medium">Community Standards</div>
+                  <div className="text-sm text-gray-600">
+                    Public devotions should be encouraging, biblically sound, and appropriate for all ages. Content is
+                    moderated to maintain a safe, uplifting environment.
+                  </div>
+                </div>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
       </div>
     </div>
   )

@@ -1,11 +1,12 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { BookOpen, Plus, Search, Lock, Globe, Heart, Calendar, TrendingUp, ArrowRight, RefreshCw, Loader2, ArrowLeft } from "lucide-react"
+import { BookOpen, Plus, Search, Lock, Globe, Heart, Calendar, TrendingUp, ArrowRight, RefreshCw, Loader2, ArrowLeft, Activity } from "lucide-react"
 import { useState, useEffect, useCallback } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
 import { Link, router } from '@inertiajs/react';
 import { toast } from 'sonner';
+import { formatDistanceToNow, parseISO } from 'date-fns';
 
 
 interface Devotion {
@@ -211,43 +212,49 @@ export default function UserDashboard({ devotions = [], pagination, filters, sta
     };
 
     return (
-      <div className="w-full py-2 sm:py-4 px-2 sm:px-0">
-        <div className="grid lg:grid-cols-4 gap-3 sm:gap-4 md:gap-6">
+      <div className="w-full py-4 sm:py-6 px-2 sm:px-4">
+        <div className="grid lg:grid-cols-4 gap-4 sm:gap-6">
           {/* Main Content */}
-          <div className="lg:col-span-3 space-y-3 sm:space-y-4 md:space-y-6">
+          <div className="lg:col-span-3 space-y-4 sm:space-y-6">
             {/* Stats Cards */}
-            <div className="grid grid-cols-3 sm:grid-cols-2 md:grid-cols-4 sm:gap-3">
-              <Card className="h-full">
-                <CardContent className="p-2 sm:p-3 md:p-4">
-                  <div className="flex items-center space-x-2 sm:space-x-3">
-                    <BookOpen className="h-4 sm:h-5 w-4 sm:w-5 text-blue-500 flex-shrink-0" />
+            <div className="grid grid-cols-3 gap-3 sm:gap-4">
+              <Card className="h-full shadow-sm hover:shadow-md transition-shadow duration-200">
+                <CardContent className="p-4 sm:p-5">
+                  <div className="flex items-center space-x-3">
+                    <div className="p-2 rounded-lg bg-blue-50">
+                      <BookOpen className="h-5 w-5 text-blue-600" />
+                    </div>
                     <div className="min-w-0">
-                      <div className="text-xl sm:text-2xl font-bold truncate">{stats.totalDevotions}</div>
-                      <div className="text-xs sm:text-sm text-gray-500 truncate">Total Devotions</div>
+                      <div className="text-2xl font-bold text-gray-900">{stats.totalDevotions}</div>
+                      <div className="text-sm font-medium text-gray-500">Total Devotions</div>
                     </div>
                   </div>
                 </CardContent>
               </Card>
 
-              <Card className="h-full">
-                <CardContent className="p-3 sm:p-4">
-                  <div className="flex items-center space-x-2 sm:space-x-3">
-                    <Globe className="h-4 sm:h-5 w-4 sm:w-5 text-purple-500 flex-shrink-0" />
+              <Card className="h-full shadow-sm hover:shadow-md transition-shadow duration-200">
+                <CardContent className="p-4 sm:p-5">
+                  <div className="flex items-center space-x-3">
+                    <div className="p-2 rounded-lg bg-purple-50">
+                      <Globe className="h-5 w-5 text-purple-600" />
+                    </div>
                     <div className="min-w-0">
-                      <div className="text-xl sm:text-2xl font-bold truncate">{stats.publicDevotions}</div>
-                      <div className="text-xs sm:text-sm text-gray-500 truncate">Shared</div>
+                      <div className="text-2xl font-bold text-gray-900">{stats.publicDevotions}</div>
+                      <div className="text-sm font-medium text-gray-500">Shared</div>
                     </div>
                   </div>
                 </CardContent>
               </Card>
 
-              <Card className="h-full">
-                <CardContent className="p-3 sm:p-4">
-                  <div className="flex items-center space-x-2 sm:space-x-3">
-                    <Lock className="h-4 sm:h-5 w-4 sm:w-5 text-purple-500 flex-shrink-0" />
+              <Card className="h-full shadow-sm hover:shadow-md transition-shadow duration-200">
+                <CardContent className="p-4 sm:p-5">
+                  <div className="flex items-center space-x-3">
+                    <div className="p-2 rounded-lg bg-indigo-50">
+                      <Lock className="h-5 w-5 text-indigo-600" />
+                    </div>
                     <div className="min-w-0">
-                      <div className="text-xl sm:text-2xl font-bold truncate">{stats.privateDevotions}</div>
-                      <div className="text-xs sm:text-sm text-gray-500 truncate">Private</div>
+                      <div className="text-2xl font-bold text-gray-900">{stats.privateDevotions}</div>
+                      <div className="text-sm font-medium text-gray-500">Private</div>
                     </div>
                   </div>
                 </CardContent>
@@ -255,23 +262,24 @@ export default function UserDashboard({ devotions = [], pagination, filters, sta
             </div>
 
             {/* Search and Filter */}
-            <Card className="overflow-hidden">
-              <CardContent className="p-3 sm:p-4">
-                <div className="flex flex-col gap-3">
+            <Card className="overflow-hidden border border-gray-100 shadow-sm">
+              <CardContent className="p-4 sm:p-5">
+                <div className="space-y-4">
                   <div className="relative">
-                    <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400 pointer-events-none" />
+                    <Search className="absolute left-3.5 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400 pointer-events-none" />
                     <Input
                       placeholder="Search your devotions..."
                       value={searchQuery}
                       onChange={(e) => handleSearchChange(e.target.value)}
-                      className="pl-10 w-full"
+                      className="pl-10 h-11 text-base"
                     />
                   </div>
-                  <div className="flex flex-wrap gap-2">
+                  <div className="flex flex-wrap items-center gap-2">
+                    <span className="text-sm font-medium text-gray-700 mr-1">Filter by:</span>
                     <Button
                       variant={filterPrivacy === "all" ? "default" : "outline"}
                       size="sm"
-                      className="flex-1 sm:flex-initial text-xs sm:text-sm"
+                      className="h-9 px-3 text-sm font-medium transition-colors"
                       onClick={() => handlePrivacyFilter("all")}
                     >
                       All
@@ -279,20 +287,20 @@ export default function UserDashboard({ devotions = [], pagination, filters, sta
                     <Button
                       variant={filterPrivacy === "private" ? "default" : "outline"}
                       size="sm"
-                      className="flex-1 sm:flex-initial text-xs sm:text-sm"
+                      className="h-9 px-3 text-sm font-medium transition-colors"
                       onClick={() => handlePrivacyFilter("private")}
                     >
-                      <Lock className="h-3 w-3 sm:h-4 sm:w-4 mr-1" />
-                      <span className="hidden xs:inline">Private</span>
+                      <Lock className="h-3.5 w-3.5 mr-1.5" />
+                      <span>Private</span>
                     </Button>
                     <Button
                       variant={filterPrivacy === "public" ? "default" : "outline"}
                       size="sm"
-                      className="flex-1 sm:flex-initial text-xs sm:text-sm"
+                      className="h-9 px-3 text-sm font-medium transition-colors"
                       onClick={() => handlePrivacyFilter("public")}
                     >
-                      <Globe className="h-3 w-3 sm:h-4 sm:w-4 mr-1" />
-                      <span className="hidden xs:inline">Shared</span>
+                      <Globe className="h-3.5 w-3.5 mr-1.5" />
+                      <span>Shared</span>
                     </Button>
                   </div>
                 </div>
@@ -303,51 +311,77 @@ export default function UserDashboard({ devotions = [], pagination, filters, sta
             <div className="space-y-3 sm:space-y-4">
               {filteredDevotions.length > 0 ? (
                 filteredDevotions.map((devotion) => (
-                <Card key={devotion.id} className="hover:shadow-md transition-shadow overflow-hidden">
-                  <CardHeader className="p-3 sm:p-4 md:p-6 pb-2 sm:pb-3 md:pb-4">
-                    <div className="flex flex-col xs:flex-row xs:items-start justify-between gap-2">
-                      <div className="flex-1 min-w-0">
-                        <CardTitle className="text-base sm:text-lg mb-1 truncate">{devotion.title}</CardTitle>
-                        <CardDescription className="font-medium text-blue-600 text-sm sm:text-base">{devotion.verse}</CardDescription>
-                      </div>
-                      <div className="flex items-center space-x-2 self-start">
-                        <Badge variant="outline" className="text-xs sm:text-sm">{devotion.mood}</Badge>
+                <Card key={devotion.id} className="border border-gray-200 hover:shadow-md transition-shadow">
+                  <CardHeader className="pb-3">
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center space-x-2">
+                        <Badge variant="outline" className="text-xs bg-indigo-50 text-indigo-700 border-indigo-200">
+                          {devotion.mood}
+                        </Badge>
                         {devotion.isPublic ? (
-                          <Globe className="h-4 w-4 text-blue-500 flex-shrink-0" />
+                          <div className="flex items-center text-xs text-indigo-600">
+                            <Globe className="h-3 w-3 mr-1" />
+                            <span>Public</span>
+                          </div>
                         ) : (
-                          <Lock className="h-4 w-4 text-gray-400 flex-shrink-0" />
+                          <div className="flex items-center text-xs text-gray-600">
+                            <Lock className="h-3 w-3 mr-1" />
+                            <span>Private</span>
+                          </div>
                         )}
+                      </div>
+                      <div className="text-xs text-gray-500 whitespace-nowrap">
+                        {formatDistanceToNow(new Date(devotion.createdAt), { addSuffix: true })}
                       </div>
                     </div>
                   </CardHeader>
-                  <CardContent className="p-3 sm:p-4 md:p-6 pt-0">
-                    <p className="text-gray-600 mb-3 text-sm sm:text-base line-clamp-2">{devotion.excerpt}</p>
-                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 sm:gap-3">
-                      <div className="flex items-center justify-between sm:justify-end gap-2 text-xs sm:text-sm text-gray-500">
-                        <span className="whitespace-nowrap text-xs sm:text-sm">{devotion.createdAt}</span>
-                        <Button variant="ghost" size="sm" className="h-7 sm:h-8 px-2 sm:px-3 text-xs sm:text-sm" asChild>
-                          <Link href={route('devotion.show', { id: devotion.id })} className="whitespace-nowrap">
-                            View <ArrowRight className="ml-1 h-3 w-3 flex-shrink-0" />
-                          </Link>
-                        </Button>
+                  <CardContent className="pt-0">
+                    <CardTitle className="text-base font-semibold mb-1">
+                      <Link href={route('devotion.show', { id: devotion.id })} className="hover:text-indigo-600 hover:underline">
+                        {devotion.title}
+                      </Link>
+                    </CardTitle>
+                    <p className="text-sm text-indigo-600 font-medium mb-2">{devotion.verse}</p>
+                    <p className="text-sm text-gray-600 mb-4 line-clamp-2">{devotion.excerpt}</p>
+                    <div className="flex items-center justify-between pt-2 border-t">
+                      <div className="text-xs text-gray-500">
+                        {devotion.createdAt}
                       </div>
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        className="h-8 text-sm text-blue-600 hover:text-blue-700"
+                        asChild
+                      >
+                        <Link href={route('devotion.show', { id: devotion.id })} className="group-hover:underline">
+                          View Devotion
+                          <ArrowRight className="ml-1.5 h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5" />
+                        </Link>
+                      </Button>
                     </div>
                   </CardContent>
                 </Card>
               ))
             ) : (
-              <Card>
-                <CardContent className="p-6 text-center">
-                  <BookOpen className="mx-auto h-12 w-12 text-gray-400 mb-4" />
-                  <h3 className="text-lg font-medium text-gray-900 mb-1">No devotions found</h3>
-                  <p className="text-gray-500 mb-4">
+              <Card className="border-2 border-dashed border-gray-200 bg-transparent">
+                <CardContent className="p-8 text-center">
+                  <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-gray-50 mb-4">
+                    <BookOpen className="h-8 w-8 text-gray-400" />
+                  </div>
+                  <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                    {searchQuery || filterPrivacy !== 'all' ? 'No matching devotions' : 'No devotions yet'}
+                  </h3>
+                  <p className="text-gray-500 mb-6 max-w-md mx-auto">
                     {searchQuery || filterPrivacy !== 'all'
-                      ? 'Try adjusting your search or filter criteria.'
-                      : 'Start by creating your first devotion.'}
+                      ? 'Try adjusting your search or filter criteria to find what you\'re looking for.'
+                      : 'Start your spiritual journey by creating your first devotion.'}
                   </p>
-                  <Button asChild>
-                    <Link href={route('devotion.create')}>
-                      <Plus className="h-4 w-4 mr-2" />
+                  <Button asChild className="group">
+                    <Link
+                      href={route('devotion.create')}
+                      className="inline-flex items-center justify-center rounded-lg bg-blue-600 px-5 py-2.5 text-sm font-medium text-white hover:bg-blue-700 focus:outline-none focus:ring-4 focus:ring-blue-300 transition-colors"
+                    >
+                      <Plus className="mr-2 h-4 w-4" />
                       New Devotion
                     </Link>
                   </Button>
@@ -375,28 +409,28 @@ export default function UserDashboard({ devotions = [], pagination, filters, sta
                         Previous
                       </Button>
                       <span className="text-sm text-gray-500 px-2">
-                        Page {pagination.currentPage} of {pagination.lastPage}
-                      </span>
-                      <Button
-                        variant="outline"
-                        size="sm"
-                        onClick={() => navigateToPage(pagination.currentPage + 1)}
-                        disabled={!pagination.hasMorePages}
-                      >
-                        Next
-                        <ArrowRight className="h-4 w-4 ml-1" />
-                      </Button>
-                    </div>
+                      Page {pagination.currentPage} of {pagination.lastPage}
+                    </span>
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={() => navigateToPage(pagination.currentPage + 1)}
+                      disabled={!pagination.hasMorePages}
+                    >
+                      Next
+                      <ArrowRight className="h-4 w-4 ml-1" />
+                    </Button>
                   </div>
-                </CardContent>
-              </Card>
-            )}
-          </div>
+                </div>
+              </CardContent>
+            </Card>
+          )}
+        </div>
 
-          {/* Sidebar */}
-          <div className="space-y-6">
+        {/* Sidebar */}
+        <div className="space-y-6">
             {/* Quick Actions */}
-            <Card>
+            <Card className="border border-gray-100 shadow-sm">
               <CardHeader>
                 <CardTitle className="text-lg">Quick Actions</CardTitle>
               </CardHeader>
@@ -422,79 +456,36 @@ export default function UserDashboard({ devotions = [], pagination, filters, sta
               </CardContent>
             </Card>
 
-            {/* Recent Activity */}
-            <Card>
-              <CardHeader>
-                <CardTitle className="text-lg">Recent Activity</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-3 text-sm">
-                  {stats.lastDevotion ? (
-                    <div className="space-y-3">
-                      <div className="flex items-start space-x-3">
-                        <div className="w-2 h-2 bg-green-500 rounded-full mt-1.5 flex-shrink-0"></div>
-                        <div className="flex-1">
-                          <p className="font-medium text-sm">
-                            Created "{stats.lastDevotion.title}"
-                            {stats.lastDevotion.is_private && (
-                              <Lock className="h-3 w-3 ml-1.5 inline text-gray-400" />
-                            )}
-                          </p>
-                          <p className="text-xs text-gray-500 mt-0.5">
-                            {stats.lastDevotion.created_at}
-                          </p>
-                        </div>
-                      </div>
-                      <div className="pl-5">
-                        <Button variant="outline" size="sm" asChild>
-                          <Link href={route('devotion.show', { id: stats.lastDevotion.id })} className="text-xs">
-                            View Devotion <ArrowRight className="h-3 w-3 ml-1" />
-                          </Link>
-                        </Button>
-                      </div>
-                    </div>
-                  ) : (
-                    <div className="text-center py-4">
-                      <BookOpen className="h-5 w-5 mx-auto text-gray-400 mb-2" />
-                      <p className="text-sm text-gray-500">No recent devotions</p>
-                      <p className="text-xs text-gray-400 mt-1">Create your first devotion to see it here</p>
-                    </div>
-                  )}
-                </div>
-              </CardContent>
-            </Card>
-
             {/* Today's Verse */}
-            <Card>
-              <CardHeader>
+            <Card className="border border-gray-200 bg-white shadow-sm">
+              <CardHeader className="pb-3">
                 <div className="flex items-center justify-between">
-                  <CardTitle className="text-lg">Today's Verse</CardTitle>
+                  <div className="flex items-center space-x-2">
+                    <CardTitle className="text-base font-semibold text-gray-900">Today's Verse</CardTitle>
+                  </div>
                 </div>
               </CardHeader>
-              <CardContent>
+              <CardContent className="pt-0">
                 {randomVerse ? (
-                  <>
-                    <blockquote className="text-sm italic text-gray-700 mb-2">
-                      "{randomVerse.text}"
-                    </blockquote>
-                    <div className="text-xs text-gray-500 mb-3">{randomVerse.reference}</div>
+                  <div className="space-y-4">
+                    <div className="bg-indigo-50/50 rounded-lg p-4 border border-indigo-100">
+                      <blockquote className="text-sm text-gray-700 leading-relaxed italic">
+                        "{randomVerse.text}"
+                      </blockquote>
+                      <p className="mt-2 text-right text-sm font-medium text-indigo-700">— {randomVerse.reference}</p>
+                    </div>
                     <Button
-                      variant="outline"
-                      size="sm"
-                      className="w-full"
                       onClick={handleCreateDevotion}
-                      disabled={isLoading}
+                      className="w-full bg-indigo-600 hover:bg-indigo-700 text-white transition-colors"
                     >
+                      <Plus className="mr-2 h-4 w-4" />
                       Create Devotion
                     </Button>
-                  </>
+                  </div>
                 ) : (
-                  <div className="flex items-center justify-center h-20">
-                    {isLoading ? (
-                      <Loader2 className="h-5 w-5 animate-spin text-gray-400" />
-                    ) : (
-                      <p className="text-sm text-gray-500">No verse available</p>
-                    )}
+                  <div className="flex flex-col items-center justify-center py-6">
+                    <Loader2 className="h-8 w-8 animate-spin text-blue-500 mb-3" />
+                    <p className="text-sm text-gray-500">Loading today's verse...</p>
                   </div>
                 )}
               </CardContent>

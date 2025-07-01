@@ -124,77 +124,90 @@ export function CommunityPosts({
   }, [initialDevotions])
 
   const CommunityPost = ({ post }: { post: Devotion }) => (
-    <Card key={post.id} className="hover:shadow-md transition-shadow overflow-hidden">
-      <CardHeader className="p-3 sm:p-4 md:p-6 pb-2 sm:pb-3 md:pb-4">
-        <div className="flex flex-col xs:flex-row xs:items-start justify-between gap-2">
-          <div className="flex-1 min-w-0">
-            <div className="flex items-center gap-2 mb-2">
-              <Badge variant="outline" className="text-xs sm:text-sm">{post.mood}</Badge>
-              <div className="flex items-center text-xs text-blue-600">
-                <Globe className="h-3 w-3 mr-1" />
-                <span>Public</span>
-              </div>
+    <Card className="border border-gray-200 hover:shadow-md transition-shadow">
+      <CardHeader className="pb-3">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center space-x-2">
+            <Badge variant="outline" className="text-xs bg-indigo-50 text-indigo-700 border-indigo-200">
+              {post.mood}
+            </Badge>
+            <div className="flex items-center text-xs text-indigo-600">
+              <Globe className="h-3 w-3 mr-1" />
+              <span>Public</span>
             </div>
-            <CardTitle className="text-base sm:text-lg mb-1 truncate">
-              <Link href={route('devotion.show', { id: post.id })} className="hover:underline">
-                {post.title}
-              </Link>
-            </CardTitle>
-            <CardDescription className="font-medium text-blue-600 text-sm sm:text-base">{post.verse}</CardDescription>
-            <div className="mt-2 flex items-center text-xs text-gray-500">
-              <div className="flex items-center mr-4">
-                <UserIcon className="h-3.5 w-3.5 mr-1" />
-                <span>{post.user?.name || 'Anonymous'}</span>
-              </div>
-              <div className="flex items-center">
-                <CalendarIcon className="h-3.5 w-3.5 mr-1" />
-                <span>{formatDistanceToNow(new Date(post.created_at), { addSuffix: true })}</span>
-              </div>
-            </div>
+          </div>
+          <div className="text-xs text-gray-500 whitespace-nowrap">
+            {formatDistanceToNow(new Date(post.created_at), { addSuffix: true })}
           </div>
         </div>
       </CardHeader>
-      <CardContent className="p-3 sm:p-4 md:p-6 pt-0">
-        <p className="text-gray-600 mb-3 text-sm sm:text-base line-clamp-2">{post.content}</p>
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 sm:gap-3">
-          <div className="flex items-center justify-between sm:justify-end gap-2 text-xs sm:text-sm text-gray-500">
-            <Button variant="ghost" size="sm" className="h-7 sm:h-8 px-2 sm:px-3 text-xs sm:text-sm" asChild>
-              <Link href={route('devotion.show', { id: post.id })} className="whitespace-nowrap">
-                View <ArrowRight className="ml-1 h-3 w-3 flex-shrink-0" />
-              </Link>
-            </Button>
+      <CardContent className="pt-0">
+        <CardTitle className="text-base font-semibold mb-1">
+          <Link href={route('devotion.show', { id: post.id })} className="hover:text-indigo-600 hover:underline">
+            {post.title}
+          </Link>
+        </CardTitle>
+        <p className="text-sm text-indigo-600 font-medium mb-2">{post.verse}</p>
+        <p className="text-sm text-gray-600 mb-4 line-clamp-2">{post.content}</p>
+        <div className="flex items-center justify-between pt-2 border-t">
+          <div className="flex items-center text-xs text-gray-500">
+            <UserIcon className="h-3.5 w-3.5 mr-1.5 text-gray-400" />
+            <span>{post.user?.name || 'Anonymous'}</span>
           </div>
+          <Button
+            variant="outline"
+            size="sm"
+            className="h-8 text-sm text-blue-600 hover:text-blue-700 group"
+            asChild
+          >
+            <Link href={route('devotion.show', { id: post.id })}>
+              View Devotion
+              <ArrowRight className="ml-1.5 h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5" />
+            </Link>
+          </Button>
         </div>
       </CardContent>
     </Card>
   )
 
   return (
-    <div className="w-full py-2 sm:py-4 px-2 sm:px-0">
-      <div className="grid lg:grid-cols-4 gap-3 sm:gap-4 md:gap-6">
+    <div className="w-full py-4 sm:py-6 px-2 sm:px-4">
+      <div className="mb-6 text-center px-1">
+        <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900 mb-2 sm:mb-3 md:mb-4 leading-tight">
+          Community Devotions
+        </h1>
+        <p className="text-sm sm:text-base md:text-lg text-gray-600 max-w-2xl mx-auto">
+          Explore and be encouraged by devotions shared by the community.
+        </p>
+      </div>
+      <div className="grid lg:grid-cols-4 gap-4 sm:gap-6">
         {/* Main Content */}
-        <div className="lg:col-span-3 space-y-3 sm:space-y-4 md:space-y-6">
+        <div className="lg:col-span-3 space-y-4 sm:space-y-6">
           {/* Stats Cards */}
-          <div className="grid grid-cols-3 sm:grid-cols-2 md:grid-cols-4 sm:gap-3">
-            <Card className="h-full">
-              <CardContent className="p-2 sm:p-3 md:p-4">
-                <div className="flex items-center space-x-2 sm:space-x-3">
-                  <Users className="h-4 sm:h-5 w-4 sm:w-5 text-blue-500 flex-shrink-0" />
+          <div className="grid grid-cols-3 gap-3 sm:gap-4">
+            <Card className="h-full shadow-sm hover:shadow-md transition-shadow duration-200">
+              <CardContent className="p-4 sm:p-5">
+                <div className="flex items-center space-x-3">
+                  <div className="p-2 rounded-lg bg-blue-50">
+                    <Users className="h-5 w-5 text-blue-600" />
+                  </div>
                   <div className="min-w-0">
-                    <div className="text-xl sm:text-2xl font-bold truncate">{stats.totalUsers}</div>
-                    <div className="text-xs sm:text-sm text-gray-500 truncate">Members</div>
+                    <div className="text-2xl font-bold text-gray-900">{stats.totalUsers}</div>
+                    <div className="text-sm font-medium text-gray-500">Members</div>
                   </div>
                 </div>
               </CardContent>
             </Card>
 
-            <Card className="h-full">
-              <CardContent className="p-3 sm:p-4">
-                <div className="flex items-center space-x-2 sm:space-x-3">
-                  <BookOpen className="h-4 sm:h-5 w-4 sm:w-5 text-green-500 flex-shrink-0" />
+            <Card className="h-full shadow-sm hover:shadow-md transition-shadow duration-200">
+              <CardContent className="p-4 sm:p-5">
+                <div className="flex items-center space-x-3">
+                  <div className="p-2 rounded-lg bg-indigo-50">
+                    <BookOpen className="h-5 w-5 text-indigo-600" />
+                  </div>
                   <div className="min-w-0">
-                    <div className="text-xl sm:text-2xl font-bold truncate">{stats.totalDevotions}</div>
-                    <div className="text-xs sm:text-sm text-gray-500 truncate">Public Devotions</div>
+                    <div className="text-2xl font-bold text-gray-900">{stats.totalDevotions}</div>
+                    <div className="text-sm font-medium text-gray-500">Public Devotions</div>
                   </div>
                 </div>
               </CardContent>
@@ -214,41 +227,47 @@ export function CommunityPosts({
           </div>
 
           {/* Search and Filter */}
-          <Card className="overflow-hidden">
-            <CardContent className="p-3 sm:p-4">
-              <div className="flex flex-col gap-3">
+          <Card className="border border-gray-200">
+            <CardHeader className="pb-3">
+              <div className="flex items-center justify-between">
+                <h3 className="text-base font-semibold">Search & Filter</h3>
+              </div>
+            </CardHeader>
+            <CardContent className="pt-0">
+              <div className="space-y-4">
                 <div className="relative">
-                  <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400 pointer-events-none" />
+                  <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400" />
                   <Input
-                    placeholder="Search community devotions..."
+                    type="text"
+                    placeholder="Search devotions..."
+                    className="pl-9 h-10"
                     value={searchQuery}
                     onChange={(e) => handleSearchChange(e.target.value)}
-                    className="pl-10 w-full"
                   />
-                  {isSearching && (
-                    <Loader2 className="absolute right-3 top-1/2 transform -translate-y-1/2 h-4 w-4 animate-spin text-gray-400" />
-                  )}
                 </div>
-                <div className="flex flex-wrap gap-2">
-                  <Button
-                    variant={filterMood === "all" ? "default" : "outline"}
-                    size="sm"
-                    className="flex-1 sm:flex-initial text-xs sm:text-sm"
-                    onClick={() => handleMoodFilter("all")}
-                  >
-                    All
-                  </Button>
-                  {availableMoods.map((mood) => (
+                <div className="space-y-2">
+                  <p className="text-sm font-medium text-gray-700">Filter by mood:</p>
+                  <div className="flex flex-wrap gap-2">
                     <Button
-                      key={mood}
-                      variant={filterMood === mood ? "default" : "outline"}
+                      variant={filterMood === 'all' ? 'default' : 'outline'}
                       size="sm"
-                      className="flex-1 sm:flex-initial text-xs sm:text-sm"
-                      onClick={() => handleMoodFilter(mood)}
+                      className="h-8 text-xs sm:text-sm"
+                      onClick={() => handleMoodFilter('all')}
                     >
-                      {mood} ({stats.moodCounts[mood] || 0})
+                      All
                     </Button>
-                  ))}
+                    {availableMoods.map((mood) => (
+                      <Button
+                        key={mood}
+                        variant={filterMood === mood ? 'default' : 'outline'}
+                        size="sm"
+                        className="h-8 text-xs sm:text-sm capitalize"
+                        onClick={() => handleMoodFilter(mood)}
+                      >
+                        {mood}
+                      </Button>
+                    ))}
+                  </div>
                 </div>
               </div>
             </CardContent>
