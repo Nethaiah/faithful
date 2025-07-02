@@ -1,6 +1,6 @@
 import AppLayout from '@/layouts/app-layout';
 import { type BreadcrumbItem } from '@/types';
-import { CommunityPosts } from '@/components/community-posts';
+import { CommunityPosts, type Devotion } from '@/components/community-posts';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -16,12 +16,16 @@ interface CommunityPageProps {
             title: string;
             content: string;
             verse: string;
+            verse_content?: string;
             mood: string;
             created_at: string;
+            updated_at?: string;
+            is_private?: boolean;
             emotions_count?: number;
             user: {
                 id: number;
                 name: string;
+                email: string;
                 avatar?: string;
             };
         }>;
@@ -45,11 +49,31 @@ interface CommunityPageProps {
     };
 }
 
+function transformToDevotion(devotion: any): Devotion {
+    return {
+        ...devotion,
+        verse_content: devotion.verse_content || '',
+        updated_at: devotion.updated_at || new Date().toISOString(),
+        is_private: devotion.is_private ?? false,
+        user: {
+            id: devotion.user.id,
+            name: devotion.user.name,
+            email: devotion.user.email || '',
+            avatar: devotion.user.avatar
+        }
+    };
+}
+
 export default function Community({ devotions, filters, moods, stats }: CommunityPageProps) {
+    const transformedDevotions = {
+        ...devotions,
+        data: devotions.data.map(transformToDevotion)
+    };
+
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <CommunityPosts
-                initialDevotions={devotions}
+                initialDevotions={transformedDevotions}
                 filters={filters}
                 moods={moods}
                 stats={stats}
