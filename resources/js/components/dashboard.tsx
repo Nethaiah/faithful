@@ -216,51 +216,6 @@ export default function UserDashboard({ devotions = [], pagination, filters, sta
         <div className="grid lg:grid-cols-4 gap-4 sm:gap-6">
           {/* Main Content */}
           <div className="lg:col-span-3 space-y-4 sm:space-y-6">
-            {/* Stats Cards */}
-            <div className="grid grid-cols-3 gap-3 sm:gap-4">
-              <Card className="h-full shadow-sm hover:shadow-md transition-shadow duration-200">
-                <CardContent className="p-4 sm:p-5">
-                  <div className="flex items-center space-x-3">
-                    <div className="p-2 rounded-lg bg-blue-50">
-                      <BookOpen className="h-5 w-5 text-blue-600" />
-                    </div>
-                    <div className="min-w-0">
-                      <div className="text-2xl font-bold text-gray-900">{stats.totalDevotions}</div>
-                      <div className="text-sm font-medium text-gray-500">Total Devotions</div>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-
-              <Card className="h-full shadow-sm hover:shadow-md transition-shadow duration-200">
-                <CardContent className="p-4 sm:p-5">
-                  <div className="flex items-center space-x-3">
-                    <div className="p-2 rounded-lg bg-purple-50">
-                      <Globe className="h-5 w-5 text-purple-600" />
-                    </div>
-                    <div className="min-w-0">
-                      <div className="text-2xl font-bold text-gray-900">{stats.publicDevotions}</div>
-                      <div className="text-sm font-medium text-gray-500">Shared</div>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-
-              <Card className="h-full shadow-sm hover:shadow-md transition-shadow duration-200">
-                <CardContent className="p-4 sm:p-5">
-                  <div className="flex items-center space-x-3">
-                    <div className="p-2 rounded-lg bg-indigo-50">
-                      <Lock className="h-5 w-5 text-indigo-600" />
-                    </div>
-                    <div className="min-w-0">
-                      <div className="text-2xl font-bold text-gray-900">{stats.privateDevotions}</div>
-                      <div className="text-sm font-medium text-gray-500">Private</div>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-            </div>
-
             {/* Search and Filter */}
             <Card className="overflow-hidden border border-gray-100 shadow-sm">
               <CardContent className="p-4 sm:p-5">
@@ -453,6 +408,38 @@ export default function UserDashboard({ devotions = [], pagination, filters, sta
                     Random Verse
                   </Link>
                 </Button>
+              </CardContent>
+            </Card>
+
+            {/* Devotion Overview */}
+            <Card className="border border-gray-100 shadow-sm">
+              <CardHeader>
+                <CardTitle className="text-base">Devotion Overview</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-4">
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center space-x-2">
+                      <BookOpen className="h-4 w-4 text-blue-500" />
+                      <span className="text-sm">Total Devotions</span>
+                    </div>
+                    <Badge variant="default">{stats.totalDevotions}</Badge>
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center space-x-2">
+                      <Globe className="h-4 w-4 text-purple-500" />
+                      <span className="text-sm">Shared Devotions</span>
+                    </div>
+                    <Badge variant="default">{stats.publicDevotions}</Badge>
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center space-x-2">
+                      <Lock className="h-4 w-4 text-gray-500" />
+                      <span className="text-sm">Private Devotions</span>
+                    </div>
+                    <Badge variant="secondary">{stats.privateDevotions}</Badge>
+                  </div>
+                </div>
               </CardContent>
             </Card>
 

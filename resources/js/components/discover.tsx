@@ -284,21 +284,15 @@ export default function MoodDiscovery() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      <div className="container mx-auto max-w-7xl px-3 sm:px-4 py-3 sm:py-4">
-        {/* Header */}
-        <div className="mb-6 sm:mb-8">
-          <div className="flex items-center mb-3 sm:mb-4">
-            </div>
-            <div className="text-center px-1">
-              <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900 mb-2 sm:mb-3 md:mb-4 leading-tight">
-                Find God's Word for Your Heart
-              </h1>
-              <p className="text-sm sm:text-base md:text-lg text-gray-600 max-w-2xl mx-auto">
-                Share how you're feeling today, and discover Bible verses that speak directly to your situation
-              </p>
-            </div>
-          </div>
+    <div className="w-full py-4 sm:py-6 px-2 sm:px-4">
+      <div className="mb-6 text-center px-1">
+        <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900 mb-2 sm:mb-3 md:mb-4 leading-tight">
+          Find God's Word for Your Heart
+        </h1>
+        <p className="text-sm sm:text-base md:text-lg text-gray-600 max-w-2xl mx-auto">
+          Share how you're feeling today, and discover Bible verses that speak directly to your situation
+        </p>
+      </div>
 
           {/* Mood Selection */}
           <Card className="mb-6 sm:mb-8 overflow-hidden">
@@ -532,7 +526,6 @@ export default function MoodDiscovery() {
               )}
             </CardContent>
           </Card>
-      </div>
     </div>
   )
 }

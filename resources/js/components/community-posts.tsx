@@ -183,49 +183,6 @@ export function CommunityPosts({
       <div className="grid lg:grid-cols-4 gap-4 sm:gap-6">
         {/* Main Content */}
         <div className="lg:col-span-3 space-y-4 sm:space-y-6">
-          {/* Stats Cards */}
-          <div className="grid grid-cols-3 gap-3 sm:gap-4">
-            <Card className="h-full shadow-sm hover:shadow-md transition-shadow duration-200">
-              <CardContent className="p-4 sm:p-5">
-                <div className="flex items-center space-x-3">
-                  <div className="p-2 rounded-lg bg-blue-50">
-                    <Users className="h-5 w-5 text-blue-600" />
-                  </div>
-                  <div className="min-w-0">
-                    <div className="text-2xl font-bold text-gray-900">{stats.totalUsers}</div>
-                    <div className="text-sm font-medium text-gray-500">Members</div>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-
-            <Card className="h-full shadow-sm hover:shadow-md transition-shadow duration-200">
-              <CardContent className="p-4 sm:p-5">
-                <div className="flex items-center space-x-3">
-                  <div className="p-2 rounded-lg bg-indigo-50">
-                    <BookOpen className="h-5 w-5 text-indigo-600" />
-                  </div>
-                  <div className="min-w-0">
-                    <div className="text-2xl font-bold text-gray-900">{stats.totalDevotions}</div>
-                    <div className="text-sm font-medium text-gray-500">Public Devotions</div>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-
-            <Card className="h-full">
-              <CardContent className="p-3 sm:p-4">
-                <div className="flex items-center space-x-2 sm:space-x-3">
-                  <Globe className="h-4 sm:h-5 w-4 sm:w-5 text-purple-500 flex-shrink-0" />
-                  <div className="min-w-0">
-                    <div className="text-xl sm:text-2xl font-bold truncate">{availableMoods.length}</div>
-                    <div className="text-xs sm:text-sm text-gray-500 truncate">Moods</div>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-          </div>
-
           {/* Search and Filter */}
           <Card className="border border-gray-200">
             <CardHeader className="pb-3">
@@ -385,21 +342,30 @@ export function CommunityPosts({
           {/* Community Stats */}
           <Card>
             <CardHeader>
-              <CardTitle className="text-lg">Community Stats</CardTitle>
+              <CardTitle className="text-base">Community Stats</CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="space-y-3 text-sm">
+              <div className="space-y-4">
                 <div className="flex items-center justify-between">
-                  <span className="text-gray-600">Total Members</span>
-                  <span className="font-medium">{stats.totalUsers.toLocaleString()}</span>
+                  <div className="flex items-center space-x-2">
+                    <Users className="h-4 w-4 text-blue-500" />
+                    <span className="text-sm">Total Members</span>
+                  </div>
+                  <Badge variant="default">{stats.totalUsers}</Badge>
                 </div>
                 <div className="flex items-center justify-between">
-                  <span className="text-gray-600">Public Devotions</span>
-                  <span className="font-medium">{stats.totalDevotions.toLocaleString()}</span>
+                  <div className="flex items-center space-x-2">
+                    <BookOpen className="h-4 w-4 text-indigo-500" />
+                    <span className="text-sm">Public Devotions</span>
+                  </div>
+                  <Badge variant="default">{stats.totalDevotions}</Badge>
                 </div>
                 <div className="flex items-center justify-between">
-                  <span className="text-gray-600">Active Moods</span>
-                  <span className="font-medium">{availableMoods.length}</span>
+                  <div className="flex items-center space-x-2">
+                    <Globe className="h-4 w-4 text-purple-500" />
+                    <span className="text-sm">Active Moods</span>
+                  </div>
+                  <Badge variant="secondary">{availableMoods.length}</Badge>
                 </div>
                 <Separator />
                 <div className="text-xs text-gray-500">
