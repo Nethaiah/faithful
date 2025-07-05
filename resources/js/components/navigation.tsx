@@ -33,7 +33,7 @@ export function Navigation() {
 
     const navItems = auth.user ? authenticatedNavItems : publicNavItems
 
-    const NavLink = ({ href, label, icon: Icon, mobile = false }: { href: string, label: string, icon: any, mobile?: boolean }) => (
+    const NavLink = ({ href, label, icon: Icon, mobile = false }: { href: string, label: string, icon: React.ComponentType<{ className?: string }>, mobile?: boolean }) => (
         <Link
             href={href}
             className={cn(

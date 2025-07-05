@@ -8,8 +8,8 @@ import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
 import { Switch } from "@/components/ui/switch"
 import { Separator } from "@/components/ui/separator"
-import { ArrowLeft, BookOpen, Heart, Sparkles, Lock, Globe, Save, Lightbulb, Loader2 } from "lucide-react"
-import { Link, usePage, useForm, router } from "@inertiajs/react"
+import { BookOpen, Heart, Sparkles, Save, Lightbulb, Loader2, Lock, Globe } from "lucide-react"
+import { Link, useForm, usePage } from "@inertiajs/react"
 import { toast } from "sonner"
 
 declare module '@inertiajs/core' {
@@ -29,9 +29,7 @@ interface RecentDevotion {
 type InertiaPageProps = {
     csrf: string;
     recentDevotions: RecentDevotion[];
-    user: {
-        // User properties
-    };
+    user: Record<string, unknown>;
 };
 
 type DevotionForm = {
@@ -466,7 +464,7 @@ export function DevotionCreation() {
         devotionText
     );
 
-    const { data, setData, post, processing, errors, reset } = useForm<DevotionForm>({
+    const { setData, post, processing, reset } = useForm<DevotionForm>({
         _token: csrf,
         mood: selectedMood,
         verse: verseReference,
@@ -495,7 +493,7 @@ export function DevotionCreation() {
         if (isSubmittingForm) return;
 
         // Basic form validation
-        if (!verseReference.trim() || !verseContent.trim() || !title.trim() || !devotionText.trim()) {
+        if (!selectedMood.trim() || !verseReference.trim() || !verseContent.trim() || !title.trim() || !devotionText.trim()) {
             toast.error('Please fill in all required fields', {
                 duration: 5000,
                 position: 'top-center',
@@ -533,10 +531,6 @@ export function DevotionCreation() {
             preserveScroll: true,
         });
     }
-
-    const togglePrivacy = () => {
-        setIsPublic(!isPublic);
-    };
 
     // Default privacy is set to private (isPublic = false)
 
@@ -658,6 +652,7 @@ export function DevotionCreation() {
                                                             <div className="flex justify-center pt-2">
                                                                 {visibleSuggestions < suggestedVerses.length ? (
                                                                     <Button
+                                                                        type="button"
                                                                         variant="ghost"
                                                                         size="sm"
                                                                         onClick={handleShowMoreSuggestions}
@@ -667,6 +662,7 @@ export function DevotionCreation() {
                                                                     </Button>
                                                                 ) : (
                                                                     <Button
+                                                                        type="button"
                                                                         variant="ghost"
                                                                         size="sm"
                                                                         onClick={handleShowLessSuggestions}

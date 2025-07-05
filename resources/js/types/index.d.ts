@@ -29,6 +29,7 @@ export interface SharedData {
     ziggy: Config & { location: string };
     sidebarOpen: boolean;
     csrf: string;
+    url: string;
     [key: string]: unknown;
 }
 

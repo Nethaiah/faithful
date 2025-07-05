@@ -49,7 +49,24 @@ interface CommunityPageProps {
     };
 }
 
-function transformToDevotion(devotion: any): Devotion {
+function transformToDevotion(devotion: {
+    id: number;
+    title: string;
+    content: string;
+    verse: string;
+    verse_content?: string;
+    mood: string;
+    created_at: string;
+    updated_at?: string;
+    is_private?: boolean;
+    emotions_count?: number;
+    user: {
+        id: number;
+        name: string;
+        email: string;
+        avatar?: string;
+    };
+}): Devotion {
     return {
         ...devotion,
         verse_content: devotion.verse_content || '',

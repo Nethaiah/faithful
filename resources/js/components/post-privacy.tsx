@@ -7,8 +7,8 @@ import { Switch } from "@/components/ui/switch"
 import { Badge } from "@/components/ui/badge"
 import { Separator } from "@/components/ui/separator"
 import { Checkbox } from "@/components/ui/checkbox"
-import { Lock, Globe, Settings, AlertTriangle, ArrowLeft, Loader2, Shield, X, Edit3 } from "lucide-react"
-import { Link, usePage } from "@inertiajs/react"
+import { Lock, Globe, AlertTriangle, Loader2, Shield, X, Edit3 } from "lucide-react"
+import { usePage } from "@inertiajs/react"
 import { toast } from "sonner"
 
 // Define the shape of the page props we expect from the backend
@@ -47,23 +47,20 @@ export function PrivacyControls() {
 
     const {
         devotions: initialDevotions = [],
-        defaultPrivacy: initialDefaultPrivacy = 'private',
         stats: initialStats = { privateCount: 0, publicCount: 0 }
     } = pageProps
 
     const [isLoading, setIsLoading] = useState(false)
     const [bulkEditMode, setBulkEditMode] = useState(false)
     const [selectedDevotions, setSelectedDevotions] = useState<number[]>([])
-    const [defaultPrivacy, setDefaultPrivacy] = useState(initialDefaultPrivacy)
     const [devotions, setDevotions] = useState<Devotion[]>(initialDevotions)
     const [stats, setStats] = useState<{ privateCount: number; publicCount: number }>(initialStats)
 
     // Update local state when props change
     useEffect(() => {
         setDevotions(initialDevotions)
-        setDefaultPrivacy(initialDefaultPrivacy)
         setStats(initialStats)
-    }, [initialDevotions, initialDefaultPrivacy, initialStats])
+    }, [initialDevotions, initialStats])
 
     const handleBulkPrivacyChange = async (makePublic: boolean) => {
         if (selectedDevotions.length === 0) return
@@ -170,39 +167,6 @@ export function PrivacyControls() {
         }
     };
 
-    const handleDefaultPrivacyChange = async (privacy: 'private' | 'public') => {
-        // Optimistically update the UI
-        const previousPrivacy = defaultPrivacy
-        setDefaultPrivacy(privacy)
-
-        try {
-            const response = await fetch(route('privacy.default.update'), {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || '',
-                    'X-Requested-With': 'XMLHttpRequest',
-                },
-                body: JSON.stringify({
-                    default_privacy: privacy,
-                }),
-            })
-
-            const data = await response.json()
-
-            if (!response.ok) {
-                throw new Error(data.message || 'Failed to update default privacy setting')
-            }
-
-            toast.success('Default privacy setting updated successfully')
-        } catch (error) {
-            console.error('Error updating default privacy:', error)
-            // Revert on error
-            setDefaultPrivacy(previousPrivacy)
-            toast.error(error instanceof Error ? error.message : 'An error occurred while updating default privacy')
-        }
-    }
-
     const selectAllDevotions = () => {
         setSelectedDevotions(devotions.map(d => d.id))
     }
@@ -212,7 +176,6 @@ export function PrivacyControls() {
     }
 
     const isAllSelected = selectedDevotions.length === devotions.length && devotions.length > 0
-    const isSomeSelected = selectedDevotions.length > 0 && selectedDevotions.length < devotions.length
 
     return (
         <div className="w-full py-4 sm:py-6 px-2 sm:px-4">
