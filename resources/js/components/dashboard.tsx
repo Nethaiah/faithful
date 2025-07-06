@@ -506,18 +506,6 @@ export default function UserDashboard({ devotions = [], pagination, filters, sta
                                     <p className="text-gray-500 mb-4 text-center">
                                         Unable to load today's verse. Please try refreshing.
                                     </p>
-                                    <Button
-                                        onClick={fetchRandomVerse}
-                                        disabled={isLoading}
-                                        className="bg-indigo-600 hover:bg-indigo-700 text-white"
-                                    >
-                                        {isLoading ? (
-                                            <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                                        ) : (
-                                            <RefreshCw className="mr-2 h-4 w-4" />
-                                        )}
-                                        Try Again
-                                    </Button>
                                 </div>
                             ) : (
                                 <div className="flex flex-col items-center justify-center py-6">

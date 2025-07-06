@@ -16,6 +16,9 @@ export function UserMenuContent({ user, mobile = false }: UserMenuContentProps) 
     const handleLogout = () => {
         cleanup();
         router.flushAll();
+
+        // Clear browser history to prevent back navigation to authenticated pages
+        window.history.replaceState(null, '', '/');
     };
 
     if (mobile) {

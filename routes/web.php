@@ -16,13 +16,13 @@ Route::get('/', function () {
 })->name('home');
 
 // Dashboard
-Route::middleware(['auth', 'verified'])->group(function () {
+Route::middleware(['auth', 'verified', 'prevent-back'])->group(function () {
     Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
     Route::get('dashboard/load-more', [DashboardController::class, 'loadMore'])->name('dashboard.load-more');
 });
 
 // Devotion
-Route::middleware(['auth','verified'])->group(function () {
+Route::middleware(['auth','verified', 'prevent-back'])->group(function () {
     Route::resource('devotion', DevotionController::class);
 });
 
@@ -37,7 +37,7 @@ Route::get('community/{devotion}', [CommunityController::class, 'show'])->name('
 Route::get('community/load-more', [CommunityController::class, 'loadMore'])->name('community.load-more');
 
 // Privacy
-Route::middleware(['auth', 'verified'])->group(function () {
+Route::middleware(['auth', 'verified', 'prevent-back'])->group(function () {
     Route::get('privacy', [PostPrivacyController::class, 'index'])->name('privacy');
     Route::post('privacy/bulk-update', [PostPrivacyController::class, 'bulkUpdate'])->name('privacy.bulk-update');
     Route::post('privacy/{devotion}', [PostPrivacyController::class, 'update'])->name('privacy.update');
@@ -46,7 +46,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
 // Devotion View
 
 // API Routes
-Route::middleware(['auth', 'verified'])->group(function () {
+Route::middleware(['auth', 'verified', 'prevent-back'])->group(function () {
     Route::get('/api/verses/content', [VerseContentController::class, 'getContent'])->name('verses.content');
     Route::post('/api/devotion/generate', [DevotionAIController::class, 'generateDevotionText'])->name('devotion.generate');
     Route::post('/api/verses/detect-mood', [VerseSuggestionController::class, 'detectMood'])->name('verses.detect-mood');
